@@ -1,0 +1,42 @@
+version: "3"
+services:
+  app:
+    build:
+      context: "docker/app/"
+    volumes:
+      - "./public/:/var/www/html"
+      - "./docker/app/httpd.conf:/etc/httpd/conf/httpd.conf"
+    depends_on:
+      - mysql
+    ports:
+      - "80:80"
+      - "443:443"
+      - "110:110"
+      - "143:143"
+      - "25:25"
+      - "587:587"
+  mysql:
+    build:
+      context: "docker/mysql/"
+    environment:
+      - MYSQL_DATABASE=sampledb
+      - MYSQL_HOST=localhost
+      - MYSQL_USER=root
+      - MYSQL_ROOT_PASSWORD=mypassword
+    volumes:
+      - "storage:/var/lib/mysql"
+      - "./docker/mysql/initdb/:/docker-entrypoint-initdb.d"
+    ports:
+      - "3306:3306"
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    environment:
+      - PMA_HOST=mysql
+      - PMA_USER=root
+      - PMA_PASSWORD=mypassword
+    depends_on:
+      - mysql
+    ports:
+      - "8080:80"
+volumes:
+  storage:
