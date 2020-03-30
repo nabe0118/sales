@@ -27,7 +27,7 @@
 						<td>
 							<?php echo Html::anchor('admin/posts/view/'.$item->id, 'View'); ?> |
 							<?php echo Html::anchor('admin/posts/edit/'.$item->id, 'Edit'); ?> |
-							<?php echo Html::anchor('admin/posts/delete/'.$item->id, 'Delete', array('onclick' => "return confirm('Are you sure?')")); ?>
+							<?php echo Html::anchor('admin/posts/delete/'.$item->id, 'Delete', array('onclick' => "return confirm('本当に削除しますか?')")); ?>
 						</td>
 					</tr>
 				<?php endforeach; ?>

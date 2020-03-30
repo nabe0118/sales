@@ -6,7 +6,7 @@
 </head>
 
 <body>
-    <h1>お問い合わせ</h1>
+    <!-- <h1>お問い合わせ</h1> -->
     <div i="wrapper">
     <?php echo $content; ?>
     <hr>
