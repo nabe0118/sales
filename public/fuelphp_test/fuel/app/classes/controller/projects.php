@@ -1,17 +1,28 @@
 <?php
+
+use Fuel\Core\Model;
+
 class Controller_Projects extends Controller_Template
 {
 
 	public function action_index()
 	{
 		$data['projects'] = Model_Project::find('all');
-		$data['development'] = Model_Project::$development_id;
-		$data['price_section'] = Model_Project::$price_section;
-		$data['order_expectation'] = Model_Project::$order_expectation;
-		$data['order_status'] = Model_Project::$order_status;
-		
+		$data['index_order_status'] = Model_Project::$order_status;
+		$data['index_order_expectation'] = Model_Project::$order_expectation;
 		$this->template->title = "Projects";
 		$this->template->content = View::forge('projects/index', $data);
+
+		// $param = Input::get();
+		// $client_date = Model_client::find('first',array(
+		// 	'related' => array(
+		// 		'client'
+		// 	),
+		// 	'where' => array(
+		// 		array('id',$param['id'])
+		// 	)
+		// )
+		// );
 
 	}
 
@@ -41,17 +52,18 @@ class Controller_Projects extends Controller_Template
 				$project = Model_Project::forge(array(
 					'project_name' => Input::post('project_name'),
 					'client_id' => Input::post('client_id'),
-					'technology_id' => Input::post('technology_id'),
-					'development_id' => Input::post('development_id'),
+					'technology' => Input::post('technology'),
+					'development' => Input::post('development'),
 					'start_date' => Input::post('start_date'),
 					'delivery_date' => Input::post('delivery_date'),
 					'price' => Input::post('price'),
 					'price_section' => Input::post('price_section'),
+					'price_flag' => Input::post('price_flag'),
 					'order_expectation' => Input::post('order_expectation'),
 					'order_status' => Input::post('order_status'),
-					'project_manager' => Input::post('project_manager'),
 					'employee_id' => Input::post('employee_id'),
 					'memo' => Input::post('memo'),
+					'user' => false,
 					'is_deleted' => false,
 				));
 
@@ -94,18 +106,19 @@ class Controller_Projects extends Controller_Template
 		{
 			$project->project_name = Input::post('project_name');
 			$project->client_id = Input::post('client_id');
-			$project->technology_id = Input::post('technology_id');
-			$project->development_id = Input::post('development_id');
+			$project->technology = Input::post('technology');
+			$project->development = Input::post('development');
 			$project->start_date = Input::post('start_date');
 			$project->delivery_date = Input::post('delivery_date');
 			$project->price = Input::post('price');
 			$project->price_section = Input::post('price_section');
+			$project->price_flag = Input::post('price_flag');
 			$project->order_expectation = Input::post('order_expectation');
 			$project->order_status = Input::post('order_status');
-			$project->project_manager = Input::post('project_manager');
 			$project->employee_id = Input::post('employee_id');
 			$project->memo = Input::post('memo');
-			// $project->is_deleted = Input::post('is_deleted');
+			$project->user = false;
+			$project->is_deleted = false;
 
 			if ($project->save())
 			{
@@ -126,18 +139,19 @@ class Controller_Projects extends Controller_Template
 			{
 				$project->project_name = $val->validated('project_name');
 				$project->client_id = $val->validated('client_id');
-				$project->technology_id = $val->validated('technology_id');
-				$project->development_id = $val->validated('development_id');
+				$project->technology = $val->validated('technology');
+				$project->development = $val->validated('development');
 				$project->start_date = $val->validated('start_date');
 				$project->delivery_date = $val->validated('delivery_date');
 				$project->price = $val->validated('price');
 				$project->price_section = $val->validated('price_section');
+				$project->price_flag = $val->validated('price_flag');
 				$project->order_expectation = $val->validated('order_expectation');
 				$project->order_status = $val->validated('order_status');
-				$project->project_manager = $val->validated('project_manager');
 				$project->employee_id = $val->validated('employee_id');
 				$project->memo = $val->validated('memo');
-				// $project->is_deleted = $val->validated('is_deleted');
+				$project->user = $val->validated('user');
+				$project->is_deleted = $val->validated('is_deleted');
 
 				Session::set_flash('error', $val->error());
 			}

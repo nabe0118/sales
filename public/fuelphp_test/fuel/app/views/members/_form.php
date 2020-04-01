@@ -38,7 +38,7 @@
 			<?php echo Form::radio('authority',1,Input::post('authority') == '1', array('id' => 'form_authority_1')) ?>
 			<?php echo Form::label('管理', 'authority_1') ?><br>
 
-			<?php echo Form::radio('authority',2,Input::post('authority') != '0', array('id' => 'form_authority_2')) ?>
+			<?php echo Form::radio('authority',2,Input::post('authority') != '1', array('id' => 'form_authority_2')) ?>
 			<?php echo Form::label('一般', 'authority_2') ?><br>
 
 				<?php /* echo Form::input('authority', Input::post('authority', isset($member) ? $member->authority : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Authority')); */?>

@@ -24,6 +24,26 @@ class Model_Client extends Model
 		),
 	);
 
+	// protected static $_table_name = 'use_food';
+
+	// protected static $_primary_key = array('id');
+
+    // protected static $_belongs_to = array(
+    //     // リレーションの関係性を示す名前を指定
+    //     'client' => array(
+    //         // 紐付けられるモデル  
+    //         'model_to' => 'Model_project',
+    //         // このモデルのキー  :id
+    //         'key_from' => 'project_id',
+    //         // 関連するモデルでのキー  :id
+    //         'key_to' => 'id',
+    //         // 関係するテーブルが保存されるときに同時にアップデートするか
+    //         'cascade_save' => false,
+    //         // 親テーブルの関連レコードが削除されるときに同時に削除するか
+    //         'cascade_delete' => false,
+    //     ),
+    // );
+
 	public static function validate($factory)
 	{
 		$val = Validation::forge($factory);
