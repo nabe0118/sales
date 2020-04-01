@@ -12,6 +12,7 @@ return array(
         3 => '004_create_clients',
         4 => '005_create_technologies',
         5 => '006_create_projects',
+        6 => '007_create_members',
       ),
     ),
     'module' => 

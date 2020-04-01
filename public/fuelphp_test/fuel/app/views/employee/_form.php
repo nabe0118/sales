@@ -25,9 +25,23 @@
 			<?php /*echo Form::input('affiliation', Input::post('affiliation', isset($employee) ? $employee->affiliation : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Affiliation')); */?>
 
 
-			<?php echo Form::label('所属', 'affiliation', array('class'=>'control-label')); ?>
+			<?php echo Form::label('所属', 'affiliation', array('class'=>'control-label')); ?><br>
 
-			<?php echo Form::input('affiliation', Input::post('affiliation', isset($employee) ? $employee->affiliation : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'所属')); ?>
+			<?php echo Form::radio('affiliation',1,Input::post('affiliation') == '1', array('id' => 'form_affiliation_1')) ?>
+			<?php echo Form::label('東京スタッフ', 'affiliation_1') ?><br>
+
+			<?php echo Form::radio('affiliation',2,Input::post('affiliation') != '0', array('id' => 'form_affiliation_2')) ?>
+			<?php echo Form::label('九州スタッフ', 'affiliation_2') ?><br>
+
+			<?php echo Form::radio('affiliation',3,Input::post('affiliation') != '0', array('id' => 'form_affiliation_3')) ?>
+			<?php echo Form::label('派遣', 'affiliation_3') ?><br>
+
+			<?php echo Form::radio('affiliation',4,Input::post('affiliation') != '0', array('id' => 'form_affiliation_4')) ?>
+			<?php echo Form::label('外注', 'affiliation_4') ?><br>
+
+			<?php echo Form::radio('affiliation',5,Input::post('affiliation') != '0', array('id' => 'form_affiliation_5')) ?>
+			<?php echo Form::label('その他', 'affiliation_5') ?><br>
+
 
 		</div>
 		<div class="form-group">

@@ -1,3 +1,5 @@
+<?php echo Asset::css('bootstrap.css'); ?>
+
 <h2><span class='muted'>クライアント一覧</span></h2>
 <br>
 <?php if ($clients): ?>

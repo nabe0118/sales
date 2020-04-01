@@ -5,6 +5,8 @@ class Controller_Employee extends Controller_Template
 	public function action_index()
 	{
 		$data['employees'] = Model_Employee::find('all');
+
+		//DBの数字を文字に変換
 		$data['zaisyoku'] = Model_Employee::$tenure_flag;
 		$data['test'] = Model_Employee::$affiliation;
 		$this->template->title = "Employees";

@@ -1,13 +1,16 @@
 <?php
 use Orm\Model;
 
-class Model_Employee extends Model
+class Model_Member extends Model
 {
 	protected static $_properties = array(
 		'id',
+		'employee_id',
 		'full_name',
 		'name_kana',
 		'email',
+		'password',
+		'authority',
 		'affiliation',
 		'tenure_flag',
 		'user_remarks',
@@ -28,33 +31,24 @@ class Model_Employee extends Model
 		),
 	);
 
-
-
-	public static $affiliation = [
-		1 => '東京スタッフ',
-		2 => '九州スタッフ',
-		3 => '派遣',
-		4 => '外注',
-		5 => 'その他',
+	public static $authority = [
+		1 => '管理',
+		2 => '一般',
 	];
-
-	public static $tenure_flag = [
-		1 => '退職',
-		2 => '在職',
-	];
-
-
 
 	public static function validate($factory)
 	{
 		$val = Validation::forge($factory);
+		$val->add_field('employee_id', 'Employee Id', 'required|valid_string[numeric]');
 		$val->add_field('full_name', 'Full Name', 'required|max_length[255]');
 		$val->add_field('name_kana', 'Name Kana', 'required|max_length[255]');
 		$val->add_field('email', 'Email', 'required|valid_email|max_length[255]');
-		$val->add_field('affiliation', 'Affiliation', 'required|valid_string[numeric]');
-		$val->add_field('tenure_flag', 'Tenure Flag', 'required|valid_string[numeric]');
-		$val->add_field('user_remarks', 'User Remarks', 'required');
-		$val->add_field('hire_date', 'Hire Date', 'required|valid_string[numeric]');
+		$val->add_field('password', 'Password', 'required|max_length[255]');
+		$val->add_field('authority', 'Authority', 'required|valid_string[numeric]');
+		// $val->add_field('affiliation', 'Affiliation', 'required|valid_string[numeric]');
+		// $val->add_field('tenure_flag', 'Tenure Flag', 'required|valid_string[numeric]');
+		// $val->add_field('user_remarks', 'User Remarks', 'required');
+		// $val->add_field('hire_date', 'Hire Date', 'required|valid_string[numeric]');
 		// $val->add_field('is_deleted', 'Is Deleted', 'required');
 
 		return $val;
