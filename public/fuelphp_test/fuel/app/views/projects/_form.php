@@ -6,7 +6,7 @@
 
 		<div class="form-group">
 			<?php echo Form::label('プロジェクト名', 'project_name', array('class'=>'control-label')); ?>
-			<?php echo Form::input('project_name', Input::post('project_name', isset($project) ? $project->project_name : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Project name')); ?>
+			<?php echo Form::input('project_name', Input::post('project_name', isset($project) ? $project->project_name : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'○○ホーム')); ?>
 		</div>
 
 		<div class="form-group">
@@ -31,7 +31,7 @@
 
 		<div class="form-group">
 			<?php echo Form::label('技術', 'technology', array('class'=>'control-label')); ?>
-			<?php echo Form::input('technology', Input::post('technology', isset($project) ? $project->technology : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Technology')); ?>
+			<?php echo Form::input('technology', Input::post('technology', isset($project) ? $project->technology : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'PHP')); ?>
 		</div>
 
 		<div class="form-group">

@@ -10,20 +10,23 @@ class Controller_Projects extends Controller_Template
 		$data['projects'] = Model_Project::find('all');
 		$data['index_order_status'] = Model_Project::$order_status;
 		$data['index_order_expectation'] = Model_Project::$order_expectation;
-		$this->template->title = "Projects";
-		$this->template->content = View::forge('projects/index', $data);
 
 		// $param = Input::get();
-		// $client_date = Model_client::find('first',array(
-		// 	'related' => array(
-		// 		'client'
-		// 	),
-		// 	'where' => array(
-		// 		array('id',$param['id'])
-		// 	)
+		// $data['client_date'] = Model_Client::find('all',array(
+		// 	'select' => array('client_name'),
+		// 	'related' => array('client'),
+		// 	// 'where' => array(array('id',1))
 		// )
 		// );
 
+		$tmp=Model_Client::find('all',['select'=>['client_name']]);
+		foreach($tmp as $value){
+			$values[] = $value['client_name'];
+			$data['client_date'] = $values;
+		}
+
+		$this->template->title = "Projects";
+		$this->template->content = View::forge('projects/index', $data);
 	}
 
 	public function action_view($id = null)

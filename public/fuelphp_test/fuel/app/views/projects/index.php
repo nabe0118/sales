@@ -60,4 +60,4 @@
 </p>
 
 
-<?php /* var_dump($client_date); */?>
+<?php var_dump($client_date); ?>
