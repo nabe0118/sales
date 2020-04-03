@@ -1,45 +1,50 @@
-<h2>プロジェクト詳細<span class='muted'>#<?php echo $project->id; ?></span></h2>
+<h2>プロジェクト詳細 <span class='muted'>#<?php echo $project->id; ?></span></h2>
 
 <p>
-	<strong>プロジェクト名:</strong>
+	<strong>Project name:</strong>
 	<?php echo $project->project_name; ?></p>
 <p>
-	<strong>クライアントID:</strong>
+	<strong>Client id:</strong>
 	<?php echo $project->client_id; ?></p>
 <p>
-	<strong>使用技術ID:</strong>
-	<?php echo $project->technology_id; ?></p>
+	<strong>Technology:</strong>
+	<?php echo $project->technology; ?></p>
 <p>
-	<strong>種別ID:</strong>
-	<?php echo $project->development_id; ?></p>
+	<strong>Development:</strong>
+	<?php echo $project->development; ?></p>
 <p>
-	<strong>開始日:</strong>
+	<strong>Start date:</strong>
 	<?php echo $project->start_date; ?></p>
 <p>
-	<strong>納期:</strong>
+	<strong>Delivery date:</strong>
 	<?php echo $project->delivery_date; ?></p>
 <p>
-	<strong>金額:</strong>
+	<strong>Price:</strong>
 	<?php echo $project->price; ?></p>
 <p>
-	<strong>金額区分:</strong>
+	<strong>Price section:</strong>
 	<?php echo $project->price_section; ?></p>
 <p>
-	<strong>注文:</strong>
+	<strong>Price flag:</strong>
+	<?php echo $project->price_flag; ?></p>
+<p>
+	<strong>Order expectation:</strong>
 	<?php echo $project->order_expectation; ?></p>
 <p>
-	<strong>ステータス:</strong>
+	<strong>Order status:</strong>
 	<?php echo $project->order_status; ?></p>
 <p>
-	<strong>PM:</strong>
-	<?php echo $project->project_manager; ?></p>
-<p>
-	<strong>社員ID:</strong>
+	<strong>Employee id:</strong>
 	<?php echo $project->employee_id; ?></p>
+<p>
+	<strong>User:</strong>
+	<?php echo $project->user; ?></p>
 <p>
 	<strong>Memo:</strong>
 	<?php echo $project->memo; ?></p>
+<p>
+	<strong>Is deleted:</strong>
+	<?php echo $project->is_deleted; ?></p>
 
-
-<?php echo Html::anchor('projects/edit/'.$project->id, '編集'); ?> |
-<?php echo Html::anchor('projects', '戻る'); ?>
+<?php echo Html::anchor('projects/edit/'.$project->id, 'Edit'); ?> |
+<?php echo Html::anchor('projects', 'Back'); ?>

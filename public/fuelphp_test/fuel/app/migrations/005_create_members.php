@@ -2,16 +2,19 @@
 
 namespace Fuel\Migrations;
 
-class Create_employees
+class Create_members
 {
 	public function up()
 	{
-		\DBUtil::create_table('employees', array(
+		\DBUtil::create_table('members', array(
 			'id' => array('type' => 'int', 'unsigned' => true, 'null' => false, 'auto_increment' => true, 'constraint' => '11'),
-			'full_name' => array('constraint' => 255, 'null' => false, 'type' => 'varchar'),
-			'name_kana' => array('constraint' => 255, 'null' => false, 'type' => 'varchar'),
-			'email' => array('constraint' => 255, 'null' => false, 'type' => 'varchar'),
-			'affiliation' => array('constraint' => 255, 'null' => false, 'type' => 'int'),
+			'employee_id' => array('constraint' => '11', 'null' => false, 'type' => 'int'),
+			'full_name' => array('constraint' => '255', 'null' => false, 'type' => 'varchar'),
+			'name_kana' => array('constraint' => '255', 'null' => false, 'type' => 'varchar'),
+			'email' => array('constraint' => '255', 'null' => false, 'type' => 'varchar'),
+			'password' => array('constraint' => '255', 'null' => false, 'type' => 'varchar'),
+			'authority' => array('constraint' => '11', 'null' => false, 'type' => 'int'),
+			'affiliation' => array('constraint' => '11', 'null' => false, 'type' => 'int'),
 			'tenure_flag' => array('constraint' => '11', 'null' => false, 'type' => 'int'),
 			'user_remarks' => array('null' => false, 'type' => 'text'),
 			'hire_date' => array('constraint' => '11', 'null' => false, 'type' => 'int'),
@@ -23,6 +26,6 @@ class Create_employees
 
 	public function down()
 	{
-		\DBUtil::drop_table('employees');
+		\DBUtil::drop_table('members');
 	}
 }

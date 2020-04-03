@@ -39,7 +39,7 @@ return array(
 	'default' => array(
 	'type' => 'pdo',
 	'connection' => array(
-	'dsn' => 'mysql:host=172.18.0.2;dbname=sampledb',
+	'dsn' => 'mysql:host=172.23.0.2;dbname=sampledb',
 	'socket' => '/var/run/mysqld/mysqld.sock',
 	'username' => 'root',
 	'password' => 'mypassword',
@@ -47,6 +47,6 @@ return array(
 	),
    );
 
-// macbook 172.20.0.2
+// macbook 172.23.0.2
 // imac    172.18.0.2
 //3306
