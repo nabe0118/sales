@@ -72,7 +72,7 @@ class Model_Project extends Model
 
 	protected static $_primary_key = array('id');
 
-	protected static $_table_name = 'projects';
+	protected static $_table_name = array('projects');
 
 	protected static $_has_many = array(
         // リレーション指定する際の関係性を示す名前を付ける
@@ -85,6 +85,22 @@ class Model_Project extends Model
 		// 関連するモデルでのキー
 		// 反対側のモデルで結合条件となる項目を示す
 		'key_to'         => 'client_id',
+		// 関係するテーブルが保存されるときに同時にアップデートするか
+		'cascade_save'   => false,
+		// 親テーブルの関連レコードが削除されるときに同時に削除するか
+		'cascade_delete' => false,
+		),
+		
+        // リレーション指定する際の関係性を示す名前を付ける
+        'member' => array(
+		// 紐づけるモデル  
+		'model_to'       => 'Model_Member',
+		// このモデルのキー
+		// 反対側のモデルとの結合条件となる項目を示す
+		'key_from'       => 'employee_id',
+		// 関連するモデルでのキー
+		// 反対側のモデルで結合条件となる項目を示す
+		'key_to'         => 'employee_id',
 		// 関係するテーブルが保存されるときに同時にアップデートするか
 		'cascade_save'   => false,
 		// 親テーブルの関連レコードが削除されるときに同時に削除するか
