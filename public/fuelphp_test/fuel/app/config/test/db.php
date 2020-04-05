@@ -25,7 +25,7 @@
 return array(
 	'default' => array(
 		'connection' => array(
-			'dsn'      => 'mysql:host=172.18.0.2;dbname=fuel_test',
+			'dsn'      => 'mysql:host=172.23.0.2;dbname=fuel_test',
 			'username' => 'fuel_app',
 			'password' => 'super_secret_password',
 		),

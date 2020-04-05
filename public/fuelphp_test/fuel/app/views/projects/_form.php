@@ -11,7 +11,13 @@
 
 		<div class="form-group">
 			<?php echo Form::label('クライアント', 'client_id', array('class'=>'control-label')); ?>
-			<?php echo Form::input('client_id', Input::post('client_id', isset($project) ? $project->client_id : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Client id')); ?>
+			<?php /*  echo Form::input('client_id', Input::post('client_id', isset($project) ? $project->client_id : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Client id')); */?>
+
+
+		<?php echo Form::select('client_id', 0, $client_data
+		);
+		?>
+
 		</div>
 
 		<div class="form-group">

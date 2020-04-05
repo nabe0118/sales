@@ -26,7 +26,7 @@
 <?php foreach ($projects as $item): ?>		
 		<tr>
 			<td><?php echo $item->project_name; ?></td>
-			<td><?php echo $item->client_id; ?></td>
+			<td><?php echo $client_data[$item->client_id]; ?></td>
 			<td><?php echo $index_order_status[$item->order_status]; ?></td>
 			<td><?php echo $item->technology; ?></td>
 			<td><?php echo $item->start_date; ?></td>
@@ -59,5 +59,3 @@
 
 </p>
 
-
-<?php var_dump($client_date); ?>

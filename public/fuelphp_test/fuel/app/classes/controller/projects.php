@@ -19,14 +19,25 @@ class Controller_Projects extends Controller_Template
 		// )
 		// );
 
-		$tmp=Model_Client::find('all',['select'=>['client_name']]);
-		foreach($tmp as $value){
-			$values[] = $value['client_name'];
-			$data['client_date'] = $values;
-		}
+		// $tmp=Model_Client::find('all',['select'=>['id','client_name']]);
+		// foreach($tmp as $value){
+		// 	$data['client_data'][$value['id']] = $value['client_name'];
+		// }
+
+		// $members=Model_Member::find('all',['select'=>['full_name']]);
+		// foreach($members as $member){
+		// 	$data['members_name'][] = $member['full_name'];
+		// }
+
+		$viewdata = $this->createViewData();
+		$data['client_data'] = $viewdata['client_data'];
+		$data['members_name'] = $viewdata['members_name'];
+
+		var_dump($viewdata);
 
 		$this->template->title = "Projects";
 		$this->template->content = View::forge('projects/index', $data);
+		
 	}
 
 	public function action_view($id = null)
@@ -41,11 +52,28 @@ class Controller_Projects extends Controller_Template
 
 		$this->template->title = "Project";
 		$this->template->content = View::forge('projects/view', $data);
+		
 
 	}
 
 	public function action_create()
 	{
+
+
+		// $tmp=Model_Client::find('all',['select'=>['id','client_name']]);
+		// foreach($tmp as $value){
+		// 	$data['client_data'][$value['id']] = $value['client_name'];
+		// }
+
+		// $members=Model_Member::find('all',['select'=>['full_name']]);
+		// foreach($members as $member){
+		// 	$data['members_name'][] = $member['full_name'];
+		// }
+
+		$viewdata = $this->createViewData();
+		$data['client_data'] = $viewdata['client_data'];
+		$data['members_name'] = $viewdata['members_name'];
+
 		if (Input::method() == 'POST')
 		{
 			$val = Model_Project::validate('create');
@@ -89,7 +117,7 @@ class Controller_Projects extends Controller_Template
 		}
 
 		$this->template->title = "Projects";
-		$this->template->content = View::forge('projects/create');
+		$this->template->content = View::forge('projects/create',$data);
 
 	}
 
@@ -185,6 +213,21 @@ class Controller_Projects extends Controller_Template
 
 		Response::redirect('projects');
 
+	}
+
+	public function createViewData()
+	{
+		$tmp=Model_Client::find('all',['select'=>['id','client_name']]);
+		foreach($tmp as $value){
+			$data['client_data'][$value['id']] = $value['client_name'];
+		}
+
+		$members=Model_Member::find('all',['select'=>['full_name']]);
+		foreach($members as $member){
+			$data['members_name'][] = $member['full_name'];
+		}
+
+		return $data;
 	}
 
 }

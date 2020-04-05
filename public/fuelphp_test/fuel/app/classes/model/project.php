@@ -78,18 +78,32 @@ class Model_Project extends Model
         // リレーション指定する際の関係性を示す名前を付ける
         'client' => array(
 		// 紐づけるモデル  
-		'model_to'       => 'Model_Client',
+			'model_to'       => 'Model_Client',
 		// このモデルのキー
-		// 反対側のモデルとの結合条件となる項目を示す
-		'key_from'       => 'id',
+			'key_from'       => 'id',
 		// 関連するモデルでのキー
 		// 反対側のモデルで結合条件となる項目を示す
-		'key_to'         => 'client_id',
+			'key_to'         => 'client_id',
 		// 関係するテーブルが保存されるときに同時にアップデートするか
-		'cascade_save'   => false,
+			'cascade_save'   => false,
 		// 親テーブルの関連レコードが削除されるときに同時に削除するか
-		'cascade_delete' => false,
-        ),
+			'cascade_delete' => false,
+		),
+		
+		// リレーション指定する際の関係性を示す名前を付ける
+		'member' => array(
+			// 紐づけるモデル  
+				'model_to'       => 'Model_Member',
+			// このモデルのキー
+				'key_from'       => 'employee_id',
+			// 関連するモデルでのキー
+			// 反対側のモデルで結合条件となる項目を示す
+				'key_to'         => 'employee_id',
+			// 関係するテーブルが保存されるときに同時にアップデートするか
+				'cascade_save'   => false,
+			// 親テーブルの関連レコードが削除されるときに同時に削除するか
+				'cascade_delete' => false,
+			),
     );
 
 
