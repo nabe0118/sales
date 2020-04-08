@@ -5,9 +5,5 @@
 <?php echo View::render('projects/_form',$client_data); ?>
 
 
-<p><?php echo Html::anchor('projects', 'Back'); ?></p>
-<?php if(empty($client_data)):?>
-<div>Data is not null</div>
-<?php endif;?>>
+<p><?php echo Html::anchor('projects', '戻る'); ?></p>
 
-<?php var_dump($client_data); ?>

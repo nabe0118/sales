@@ -58,7 +58,9 @@ class Model_Project extends Model
 		1 => '低',
 		2 => '中',
 		3 => '高',
-		4 => '注文済み',
+		4 => '内示',
+		5 => '注文有',
+
 	];
 
 	public static $order_status = [
@@ -119,11 +121,11 @@ class Model_Project extends Model
 		$val->add_field('delivery_date', 'Delivery Date', 'required|valid_string[numeric]');
 		$val->add_field('price', 'Price', 'required|valid_string[numeric]');
 		$val->add_field('price_section', 'Price Section', 'required|valid_string[numeric]');
-		$val->add_field('price_flag', 'Price Flag', 'required|valid_string[numeric]');
+		$val->add_field('price_flag', 'Price Flag', 'valid_string[numeric]');
 		$val->add_field('order_expectation', 'Order Expectation', 'required|valid_string[numeric]');
 		$val->add_field('order_status', 'Order Status', 'required|valid_string[numeric]');
 		$val->add_field('employee_id', 'Employee Id', 'required|valid_string[numeric]');
-		$val->add_field('memo', 'Memo', 'required');
+		$val->add_field('memo', 'Memo', 'max_length[255]');
 		// $val->add_field('user', 'User', 'required|max_length[255]');
 		// $val->add_field('is_deleted', 'Is Deleted', 'required');
 
