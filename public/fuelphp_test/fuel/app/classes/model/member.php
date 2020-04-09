@@ -38,11 +38,13 @@ class Model_Member extends Model
 
 	protected static $_table_name = 'members';
 
+
 	protected static $_primary_key = array('id');
 
     protected static $_belongs_to = array(
         // リレーションの関係性を示す名前を指定
         'member' => array(
+
             // 紐付けられるモデル  
             'model_to' => 'Model_Project',
             // このモデルのキー  :id
