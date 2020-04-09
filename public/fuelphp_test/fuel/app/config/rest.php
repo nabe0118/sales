@@ -99,5 +99,5 @@ return array(
 	 *
 	 */
 
-	'ignore_http_accept' => false,
+	'ignore_http_accept' => true,
 );

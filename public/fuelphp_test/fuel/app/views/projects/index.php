@@ -10,21 +10,23 @@
 <?php echo Html::anchor('#', 'システム設定',array('class' => 'btn btn-default')); ?><br><br>
 
 
-<?php echo Form::open(); ?>
+<?php echo Form::open(array('action'=>null,'id'=>'refineDate')); ?>
 		<fieldset>
 		<div>
 			<?php echo Form::label('開始日', 'refineStartDay'); ?>
-			<?php echo Form::input('refineStartDay', Input::post('refineStartDay'), array('placeholder'=>20200408)); ?>
+			<?php //echo Form::date('refineStartDay', Input::post('refineStartDay'), array('placeholder'=>20200408)); ?>
+			<?php echo Form::input('refineStartDay', Input::post('refineStartDay'), array('class'=>'from','type'=>'date')); ?>
 		</div>
 
 		<div class="form-group">
 			<?php echo Form::label('納期日', 'refineEndDay'); ?>
-			<?php echo Form::input('refineEndDay', Input::post('refineEndDay'), array('placeholder'=>20200430)); ?>
+			<?php // echo Form::date('refineEndDay', Input::post('refineEndDay'), array('placeholder'=>20200430)); ?>
+			<?php echo Form::input('refineEndDay', Input::post('refineEndDay'), array('class'=>'to','type'=>'date')); ?>
 		</div>
 
-		<div class="form-group">
+		<div class="form-group"></div>
 			<label class='control-label'>&nbsp;</label>
-			<?php echo Form::submit('submit', '絞り込み', array('class' => 'btn btn-primary')); ?>	
+			<?php echo Form::button('sentBtn', '絞り込み', array('type'=>'button','id'=>'sentBtn','class' => 'btn btn-primary')); ?>	
 		</div>
 		</fieldset>
 <?php echo Form::close(); ?>
@@ -94,3 +96,51 @@
 <p>
 	<?php echo Html::anchor('projects/create', '新規作成', array('class' => 'btn btn-success')); ?>
 </p>
+
+<script >
+'use strict';
+
+(function($){
+	$("#refineDate #sentBtn").on('click', function(){
+
+
+	var request_url = '<?php Uri::create('apis/refineday') ?>',
+
+	//meta[name="csrf-token"]要素にcontent属性を追加
+	token       = $('meta[name="csrf-token"]').attr('content'),
+	//.val()で#refineDate .from'のvalueの値を取得
+	from        = $('#refineDate .from').val(),
+	to          = $('#refineDate .to').val(),
+	form        = new FormData();
+
+	//formオブジェクトにform,toを追加
+	form.append("from", from);      
+	form.append("to", to);
+
+	console.log(form);
+
+	$.ajaxSetup({
+	headers: { 'X-CSRF-TOKEN': token }
+});
+
+$.ajax({
+	url : request_url,
+	type : "PUT",
+	data: form,
+	dataType: "json",
+	success : function(data) {
+		console.log(parseJSON(data));
+
+		// console.log(status);
+	},
+  //失敗した場合
+	error : function(XMLHttpRequest, textStatus, errorThrown) {
+    alert("エラーが発生しました：" + textStatus + ":\n" + errorThrown);
+	}
+});
+});
+
+
+})(jQuery);
+
+</script>
