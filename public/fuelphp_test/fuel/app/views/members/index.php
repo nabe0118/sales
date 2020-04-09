@@ -1,14 +1,23 @@
+<?php echo Asset::css('bootstrap.css'); ?>
+
 <h2><span class='muted'>メンバー一覧</span></h2>
 <br>
+
+<?php echo Html::anchor('projects/index', 'プロジェクト一覧',array('class' => 'btn btn-default')); ?>
+
+<?php echo Html::anchor('clients/index', 'クライアントマスタ管理',array('class' => 'btn btn-default')); ?>
+
+<?php echo Html::anchor('#', 'システム設定',array('class' => 'btn btn-default')); ?><br><br>
+
 <?php if ($members): ?>
 <table class="table table-striped">
 	<thead>
 		<tr>
 			<th>社員ID</th>
 			<th>氏名</th>
-			<th>カタカナ</th>
+			<th>フリガナ</th>
 			<th>Email</th>
-			<th>Password</th>
+			<!-- <th>Password</th> -->
 			<th>権限</th>
 			<!-- <th>所属</th> -->
 			<!-- <th>在職フラグ</th> -->
@@ -25,7 +34,7 @@
 			<td><?php echo $item->full_name; ?></td>
 			<td><?php echo $item->name_kana; ?></td>
 			<td><?php echo $item->email; ?></td>
-			<td><?php echo $item->password; ?></td>
+			<!-- <td><?php /*echo $item->password; */?></td> -->
 			<td><?php echo $kenngen[$item->authority]; ?></td>
 			<td>
 				<div class="btn-toolbar">

@@ -49,7 +49,7 @@ class Model_Client extends Model
 		$val = Validation::forge($factory);
 		$val->add_field('client_name', 'Client Name', 'required|max_length[255]');
 		$val->add_field('client_kana', 'Client Kana', 'required|max_length[255]');
-		$val->add_field('client_remarks', 'Client Remarks', 'required|max_length[255]');
+		$val->add_field('client_remarks', 'Client Remarks', 'max_length[255]');
 		// $val->add_field('is_deleted', 'Is Deleted', 'required');
 
 		return $val;

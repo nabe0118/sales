@@ -43,4 +43,5 @@ return array(
 
 	//ユーザ定義のroutes
 	// 'admin/login' => 'admin/posts/index',
+	'apis/refineday' => 'apis/refineday',
 );

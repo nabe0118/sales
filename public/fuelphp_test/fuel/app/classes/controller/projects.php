@@ -1,5 +1,6 @@
 <?php
 
+use Fuel\Core\DB;
 use Fuel\Core\Model;
 
 class Controller_Projects extends Controller_Template
@@ -11,19 +12,26 @@ class Controller_Projects extends Controller_Template
 		$data['index_order_status'] = Model_Project::$order_status;
 		$data['index_order_expectation'] = Model_Project::$order_expectation;
 
-		// $param = Input::get();
-		// $data['client_date'] = Model_Client::find('all',array(
-		// 	'select' => array('client_name'),
-		// 	'related' => array('client'),
-		// 	// 'where' => array(array('id',1))
-		// )
-		// );
+		$viewData = $this->createViewData();
+		$data['client_data'] = $viewData['client_data'];
+		$data['members_name'] = $viewData['members_name'];
 
-		$tmp=Model_Client::find('all',['select'=>['client_name']]);
-		foreach($tmp as $value){
-			$values[] = $value['client_name'];
-			$data['client_date'] = $values;
-		}
+		//プロジェクトの合計金額
+		$query = DB::select(\DB::expr('SUM(price) AS total'))->from('projects')->where('price_flag',0)->execute()->as_array();
+		$data['totalPriceEstimate'] = $query[0]['total'];
+
+		$query = DB::select(\DB::expr('SUM(price) AS total2'))->from('projects')->where('price_flag',1)->execute()->as_array();
+		$data['totalPriceConfirm'] = $query[0]['total2'];
+
+		//日付絞り込み
+		// $refineStartDay = '';
+		// $refineEndDay = '';
+		// $period = DB::select('id')->from('projects')->where('start_date','<',$refineStartDay)->where('delivery_date','<',$refineEndDay)->execute();
+
+		$period = DB::select('id')->from('projects')->where('start_date','>=',20200407)->where('delivery_date','<=',20200430)->execute();
+
+		var_dump($period);
+
 
 		$this->template->title = "Projects";
 		$this->template->content = View::forge('projects/index', $data);
@@ -33,7 +41,7 @@ class Controller_Projects extends Controller_Template
 	{
 		is_null($id) and Response::redirect('projects');
 
-		if ( ! $data['project'] = Model_Project::find($id))
+		if (!$data['project'] = Model_Project::find($id))
 		{
 			Session::set_flash('error', 'Could not find project #'.$id);
 			Response::redirect('projects');
@@ -41,11 +49,16 @@ class Controller_Projects extends Controller_Template
 
 		$this->template->title = "Project";
 		$this->template->content = View::forge('projects/view', $data);
-
 	}
 
 	public function action_create()
 	{
+		$viewData = $this->createViewData();
+		$data['client_data'] = $viewData['client_data'];
+		$data['members_name'] = $viewData['members_name'];
+		$data['today'] = date("Ymd");
+		$data['lastDayOfMonth'] = date("Ymt");
+
 		if (Input::method() == 'POST')
 		{
 			$val = Model_Project::validate('create');
@@ -70,6 +83,19 @@ class Controller_Projects extends Controller_Template
 					'is_deleted' => false,
 				));
 
+				if($project['price_flag'] == null){
+					$project['price_flag'] = 0;
+				}
+
+				//カレンダーを８桁の数字に戻す。
+				// $str = $project['start_date']
+				// $prg = '^\d{4}-\d{2}-\d{2}$';
+				// $repreg = '^\d{8}$';
+
+				// $strPreg = ($prg,$repreg,$str);
+				// strPreg = preg_replace('^\d{4}-\d{2}-\d{2}$','^\d{8}$',$str);
+
+
 				if ($project and $project->save())
 				{
 					Session::set_flash('success', 'Added project #'.$project->id.'.');
@@ -89,12 +115,18 @@ class Controller_Projects extends Controller_Template
 		}
 
 		$this->template->title = "Projects";
-		$this->template->content = View::forge('projects/create');
+		$this->template->content = View::forge('projects/create',$data);
 
 	}
 
 	public function action_edit($id = null)
 	{
+		$viewData = $this->createViewData();
+		$data['client_data'] = $viewData['client_data'];
+		$data['members_name'] = $viewData['members_name'];
+		$data['today'] = date("Ymd");
+		$data['lastDayOfMonth'] = date("Ymt");
+
 		is_null($id) and Response::redirect('projects');
 
 		if ( ! $project = Model_Project::find($id))
@@ -122,6 +154,11 @@ class Controller_Projects extends Controller_Template
 			$project->memo = Input::post('memo');
 			$project->user = false;
 			$project->is_deleted = false;
+
+			if($project['price_flag'] == null)
+			{
+				$project['price_flag'] = 0;
+			}
 
 			if ($project->save())
 			{
@@ -158,12 +195,12 @@ class Controller_Projects extends Controller_Template
 
 				Session::set_flash('error', $val->error());
 			}
-
+			
 			$this->template->set_global('project', $project, false);
 		}
 
 		$this->template->title = "Projects";
-		$this->template->content = View::forge('projects/edit');
+		$this->template->content = View::forge('projects/edit',$data);
 
 	}
 
@@ -186,5 +223,22 @@ class Controller_Projects extends Controller_Template
 		Response::redirect('projects');
 
 	}
+
+	//viewで渡すデーターをオブジェクト化
+	public function createViewData()
+	{
+		$tmp=Model_Client::find('all',['select'=>['id','client_name']]);
+		foreach($tmp as $value){
+			$data['client_data'][$value['id']] = $value['client_name'];
+		}
+
+		$members=Model_Member::find('all',['select'=>['full_name']]);
+		foreach($members as $member){
+			$data['members_name'][] = $member['full_name'];
+		}
+
+		return $data;
+	}
+
 
 }
