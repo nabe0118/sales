@@ -59,7 +59,7 @@
 			<th>&nbsp;</th>
 		</tr>
 	</thead>
-	<tbody>
+	<tbody id = refine-project>
 <?php foreach ($projects as $item): ?>
 		<tr>
 			<td><?php echo Html::anchor('projects/edit/'.$item->id, $item->project_name, array('class' => 'btn btn-default btn-sm')); ?></td>
@@ -103,8 +103,7 @@
 (function($){
 	$("#refineDate #sentBtn").on('click', function(){
 
-
-	var request_url = '<?php Uri::create('apis/refineday') ?>',
+	var request_url = '<?php echo Uri::create('apis/refineday') ?>',
 
 	//meta[name="csrf-token"]要素にcontent属性を追加
 	token       = $('meta[name="csrf-token"]').attr('content'),
@@ -113,6 +112,8 @@
 	to          = $('#refineDate .to').val(),
 	form        = new FormData();
 
+	console.log(request_url);
+
 	//formオブジェクトにform,toを追加
 	form.append("from", from);      
 	form.append("to", to);
@@ -120,22 +121,43 @@
 	console.log(form);
 
 	$.ajaxSetup({
-	headers: { 'X-CSRF-TOKEN': token }
-});
+		headers: { 'X-CSRF-TOKEN': token }
+	});
 
 $.ajax({
 	url : request_url,
 	type : "PUT",
 	data: form,
 	dataType: "json",
+	processData: false,
 	success : function(data) {
-		console.log(parseJSON(data));
+		$('#refine-project').empty();
+		$.each(data, function(index, value) {
+			var hd = '<tr>';
 
-		// console.log(status);
-	},
+			hd += '<td>'+value.project_name+'</td>'
+			hd += '<td>'+value.client_name+'</td>'
+			hd += '<td>'+value.order_status+'</td>'
+			hd += '<td>'+value.technology+'</td>'
+			hd += '<td>'+value.start_date+'</td>'
+			hd += '<td>'+value.delivery_date+'</td>'
+			hd += '<td>'+value.price_kari+'</td>'
+			hd += '<td>'+value.price+'</td>'
+			hd += '<td>'+value.order_expectation+'</td>'
+			hd += '<td>'+value.members_name+'</td>'
+			hd += '<td>'+value.memo+'</td>'
+			hd += '</tr>';
+
+			console.log(value.price_kari);
+
+			$('#refine-project').append(hd);
+		})
+		console.log(data);
+
+},
   //失敗した場合
 	error : function(XMLHttpRequest, textStatus, errorThrown) {
-    alert("エラーが発生しました：" + textStatus + ":\n" + errorThrown);
+		alert("エラーが発生しました：" + textStatus + ":\n" + errorThrown);
 	}
 });
 });
