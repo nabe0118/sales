@@ -9,6 +9,8 @@ class Controller_Projects extends Controller_Template
 	public function action_index()
 	{
 		$data['projects'] = Model_Project::find('all');
+		
+
 		$data['index_order_status'] = Model_Project::$order_status;
 		$data['index_order_expectation'] = Model_Project::$order_expectation;
 
@@ -28,9 +30,9 @@ class Controller_Projects extends Controller_Template
 		// $refineEndDay = '';
 		// $period = DB::select('id')->from('projects')->where('start_date','<',$refineStartDay)->where('delivery_date','<',$refineEndDay)->execute();
 
-		$period = DB::select('id')->from('projects')->where('start_date','>=',20200407)->where('delivery_date','<=',20200430)->execute();
+		// $period = DB::select('id')->from('projects')->where('start_date','>=',20200407)->where('delivery_date','<=',20200430)->execute();
 
-		var_dump($period);
+		// var_dump($period);
 
 
 		$this->template->title = "Projects";
@@ -232,9 +234,9 @@ class Controller_Projects extends Controller_Template
 			$data['client_data'][$value['id']] = $value['client_name'];
 		}
 
-		$members=Model_Member::find('all',['select'=>['full_name']]);
+		$members=Model_Member::find('all',['select'=>['employee_id','full_name']]);
 		foreach($members as $member){
-			$data['members_name'][] = $member['full_name'];
+			$data['members_name'][$member['employee_id']] = $member['full_name'];
 		}
 
 		return $data;

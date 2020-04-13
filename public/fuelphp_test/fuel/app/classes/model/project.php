@@ -74,7 +74,7 @@ class Model_Project extends Model
 
 	protected static $_primary_key = array('id');
 
-	protected static $_table_name = array('projects');
+	protected static $_table_name = 'projects';
 
 	protected static $_has_many = array(
         // リレーション指定する際の関係性を示す名前を付ける
