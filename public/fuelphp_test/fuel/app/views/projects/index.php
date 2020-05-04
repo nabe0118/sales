@@ -28,12 +28,39 @@
 			<label class='control-label'>&nbsp;</label>
 			<?php echo Form::button('sentBtn', '絞り込み', array('type'=>'button','id'=>'sentBtn','class' => 'btn btn-primary')); ?>	
 		</div>
+
+		<div class="form-group"></div>
+			<?php echo Form::checkbox('name', 'すべて', null, array('id' => 'form_id_checkbox', 'class' => 'class_checkbox')); ?>
+			<?php echo Form::label('すべて', 'id_checkbox'); ?><br>
+
+			<?php echo Form::checkbox('name', '商談中', true, array('id' => 'form_id_checkbox2', 'class' => 'class_checkbox')); ?>
+			<?php echo Form::label('商談中', 'id_checkbox2'); ?><br>
+
+			<?php echo Form::checkbox('name', '進行中', null, array('id' => 'form_id_checkbox3', 'class' => 'class_checkbox')); ?>
+			<?php echo Form::label('進行中', 'id_checkbox3'); ?><br>
+
+			<?php echo Form::checkbox('name', '請求済', null, array('id' => 'form_id_checkbox4', 'class' => 'class_checkbox')); ?>
+			<?php echo Form::label('請求済', 'id_checkbox4'); ?><br>
+
+			<?php echo Form::checkbox('name', '完了', null, array('id' => 'form_id_checkbox5', 'class' => 'class_checkbox')); ?>
+			<?php echo Form::label('完了', 'id_checkbox5'); ?>
+
+			<div class="form-group"></div>
+				<label class='control-label'>&nbsp;</label>
+				<?php echo Form::button('cancelBtn', 'キャンセル', array('type'=>'button','id'=>'cancelBtn','class' => 'btn btn-light')); ?>	
+			</div>
+			<div class="form-group"></div>
+				<label class='control-label'>&nbsp;</label>
+				<?php echo Form::button('okBtn', 'OK', array('type'=>'button','id'=>'okBtn','class' => 'btn btn-success ')); ?>	
+			</div>
+		</div>
+
 		</fieldset>
 <?php echo Form::close(); ?>
 
 
-<h3>確定額：<?php echo $totalPriceConfirm; ?>万円</h3>
-<h3>予定額：<?php echo $totalPriceEstimate; ?>万円</h3>
+<h3 id =totalPriceConfirm>確定額：<?php echo number_format($totalPriceConfirm); ?>万円</h3>
+<h3 id =totalPriceEstimate>予定額：<?php echo number_format($totalPriceEstimate); ?>万円</h3>
 
 
 <?php if ($projects): ?>
@@ -62,16 +89,17 @@
 	<tbody id = refine-project>
 <?php foreach ($projects as $item): ?>
 		<tr>
-			<td><?php echo Html::anchor('projects/edit/'.$item->id, $item->project_name, array('class' => 'btn btn-default btn-sm')); ?></td>
+			<td><?php echo Html::anchor('projects/edit/'.$item->id, $item->project_name); ?></td>
 			<td><?php echo $client_data[$item->client_id]; ?></td>
 			<td><?php echo $index_order_status[$item->order_status]; ?></td>
 			<td><?php echo $item->technology; ?></td>
 			<td><?php echo date('Y/m/d',strtotime($item->start_date));?></td>
 			<td><?php echo date('Y/m/d',strtotime($item->delivery_date));?></td>
-			<td><?php echo $item->price_flag? '---------' : $item->price; ?></td>
-			<td><?php echo !$item->price_flag?  '---------' : $item->price; ?></td>
+			<td><?php echo $item->price_flag? '---------' : number_format($item->price); ?></td>
+			<td><?php echo !$item->price_flag?  '---------' : number_format($item->price); ?></td>
 			<td><?php echo $index_order_expectation[$item->order_expectation]; ?></td>
 			<td><?php echo $members_name[$item->employee_id]; ?></td>
+			<!-- <td><?php //echo $item->employee_id != "000000" ? $members_name[$item->employee_id]:"未選択" ; ?></td> -->
 			<td><?php echo $item->memo; ?></td>
 			<!-- <td><?php /* echo $item->price_section; */?></td> -->
 			<!-- <td><?php /*echo $item->development; */?></td> -->
@@ -111,6 +139,10 @@
 	from        = $('#refineDate .from').val(),
 	to          = $('#refineDate .to').val(),
 	form        = new FormData();
+	var data = {
+        from: from,
+        to: to,
+    };
 
 	console.log(request_url);
 
@@ -118,24 +150,33 @@
 	form.append("from", from);      
 	form.append("to", to);
 
+	console.log(from);
+	console.log(to);
 	console.log(form);
+
 
 	$.ajaxSetup({
 		headers: { 'X-CSRF-TOKEN': token }
 	});
 
+
+
 $.ajax({
 	url : request_url,
-	type : "PUT",
-	data: form,
+	type : "POST",
+	data: data,
 	dataType: "json",
-	processData: false,
+	// processData: false,
 	success : function(data) {
+		var priceConfirm = 0;
+		var priceEstimate = 0;
 		$('#refine-project').empty();
+		$('#totalPriceConfirm').empty();
+		$('#totalPriceEstimate').empty();
 		$.each(data, function(index, value) {
 			var hd = '<tr>';
 
-			hd += '<td>'+value.project_name+'</td>'
+			hd += '<td>'+'<a href=\"/projects/edit/'+value.id+'\">'+value.project_name+'</a>'+'</td>'
 			hd += '<td>'+value.client_name+'</td>'
 			hd += '<td>'+value.order_status+'</td>'
 			hd += '<td>'+value.technology+'</td>'
@@ -148,11 +189,22 @@ $.ajax({
 			hd += '<td>'+value.memo+'</td>'
 			hd += '</tr>';
 
+			console.log(value.price);
 			console.log(value.price_kari);
 
 			$('#refine-project').append(hd);
+
+			priceConfirm += parseInt(value.price);
+			priceEstimate += parseInt(value.price_kari);
+
+
 		})
 		console.log(data);
+		$('#totalPriceConfirm').append(priceConfirm);
+		$('#totalPriceEstimate').append(priceEstimate);
+
+
+
 
 },
   //失敗した場合

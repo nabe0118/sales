@@ -13,6 +13,7 @@
 			<?php echo Html::anchor('clients/index', 'クライアント'); ?>
 			<?php  /* echo Form::label('クライアント', 'client_id', array('class'=>'control-label')); */ ?>
 			<?php echo Form::select('client_id', 0, $client_data);?>
+			
 		</div>
 
 		<div class="form-group">
@@ -37,66 +38,66 @@
 		</div>
 
 		<div class="form-group">
-			<?php echo Form::label('種別', 'development', array('class'=>'control-label')); ?><br>
+		<?php echo Form::label('種別', 'development', array('class'=>'control-label')); ?><br>
 
-			<?php echo Form::radio('development',1,Input::post('development') == '1' or Input::post('development') == '' , array('id' => 'form_development_1')) ?>
-			<?php echo Form::label('フルスクラッチ', 'development_1') ?><br>
+		<?php echo Form::radio('development',1,Input::post('development',isset($project) ? $project->development : '') == '1' or (Input::post('development') == '' and !isset($project)) , array('id' => 'form_development_1')) ?>
+		<?php echo Form::label('フルスクラッチ', 'development_1') ?><br>
 
-			<?php echo Form::radio('development',2,Input::post('development') == '2', array('id' => 'form_development_2')) ?>
-			<?php echo Form::label('カスタマイズ', 'development_1') ?><br>
+		<?php echo Form::radio('development',2,Input::post('development',isset($project) ? $project->development : '') == '2', array('id' => 'form_development_2')) ?>
+		<?php echo Form::label('カスタマイズ', 'development_1') ?><br>
 
-			<?php echo Form::radio('development',3,Input::post('development') == '3', array('id' => 'form_development_3')) ?>
-			<?php echo Form::label('パッケージ', 'development_1') ?><br>
+		<?php echo Form::radio('development',3,Input::post('development',isset($project) ? $project->development : '') == '3', array('id' => 'form_development_3')) ?>
+		<?php echo Form::label('パッケージ', 'development_1') ?><br>
 		</div>
 
 		<div class="form-group">
 			<?php echo Form::label('区分', 'price_section', array('class'=>'control-label')); ?><br>
 
-			<?php echo Form::radio('price_section',1,Input::post('price_section') == '1' or Input::post('price_section') == '', array('id' => 'form_price_section_1')) ?>
+			<?php echo Form::radio('price_section',1,Input::post('price_section',isset($project) ? $project->price_section : '') == '1' or (Input::post('price_section') == '' and !isset($project)) , array('id' => 'order_expectation_1')) ?>
 			<?php echo Form::label('請負', 'price_section_1') ?><br>
 
-			<?php echo Form::radio('price_section',2,Input::post('price_section') == '2', array('id' => 'form_price_section_2')) ?>
+			<?php echo Form::radio('price_section',2,Input::post('price_section',isset($project) ? $project->price_section : '') == '2', array('id' => 'form_price_section_2')) ?>
 			<?php echo Form::label('保守', 'price_section_2') ?><br>
 
-			<?php echo Form::radio('price_section',3,Input::post('price_section') == '3', array('id' => 'form_price_section_3')) ?>
+			<?php echo Form::radio('price_section',3,Input::post('price_section',isset($project) ? $project->price_section : '') == '3', array('id' => 'form_price_section_3')) ?>
 			<?php echo Form::label('社内保持', 'price_section_3') ?><br>
 		</div>
 
 		<div class="form-group">
 			<?php echo Form::label('確度', 'order_expectation', array('class'=>'control-label')); ?><br>
 
-			<?php echo Form::radio('order_expectation',1,Input::post('order_expectation') == '1' or Input::post('order_expectation') == '', array('id' => 'form_order_expectation_1')) ?>
+			<?php echo Form::radio('order_expectation',1,Input::post('order_expectation',isset($project) ? $project->order_expectation : '') == '1' or (Input::post('order_expectation') == '' and !isset($project)) , array('id' => 'order_expectation_1')) ?>
 			<?php echo Form::label('低', 'order_expectation_1') ?><br>
 
-			<?php echo Form::radio('order_expectation',2,Input::post('order_expectation') == '2', array('id' => 'form_order_expectation_2')) ?>
+			<?php echo Form::radio('order_expectation',2,Input::post('order_expectation',isset($project) ? $project->order_expectation : '') == '2', array('id' => 'form_order_expectation_2')) ?>
 			<?php echo Form::label('中', 'order_expectation_2') ?><br>
 
-			<?php echo Form::radio('order_expectation',3,Input::post('order_expectation') == '3', array('id' => 'form_order_expectation_3')) ?>
+			<?php echo Form::radio('order_expectation',3,Input::post('order_expectation',isset($project) ? $project->order_expectation : '') == '3', array('id' => 'form_order_expectation_3')) ?>
 			<?php echo Form::label('高', 'order_expectation_3') ?><br>
 
-			<?php echo Form::radio('order_expectation',4,Input::post('order_expectation') == '4', array('id' => 'form_order_expectation_4')) ?>
+			<?php echo Form::radio('order_expectation',4,Input::post('order_expectation',isset($project) ? $project->order_expectation : '') == '4', array('id' => 'form_order_expectation_4')) ?>
 			<?php echo Form::label('内示', 'order_expectation_4') ?><br>
 
-			<?php echo Form::radio('order_expectation',5,Input::post('order_expectation') == '5', array('id' => 'form_order_expectation_5')) ?>
+			<?php echo Form::radio('order_expectation',5,Input::post('order_expectation',isset($project) ? $project->order_expectation : '') == '5', array('id' => 'form_order_expectation_5')) ?>
 			<?php echo Form::label('注文有', 'order_expectation_5') ?><br>
 		</div>
 
 		<div class="form-group">
 			<?php echo Form::label('ステータス', 'order_status', array('class'=>'control-label')); ?><br>
 
-			<?php echo Form::radio('order_status',1,Input::post('order_status') == '1' or Input::post('order_status') == '', array('id' => 'form_order_status_1')) ?>
+			<?php echo Form::radio('order_status',1,Input::post('order_status',isset($project) ? $project->order_status : '') == '1' or (Input::post('order_status') == '' and !isset($project)) , array('id' => 'order_status_1')) ?>
 			<?php echo Form::label('商談中', 'order_status_1') ?><br>
 
-			<?php echo Form::radio('order_status',2,Input::post('order_status') == '2', array('id' => 'form_order_status_2')) ?>
+			<?php echo Form::radio('order_status',2,Input::post('order_status',isset($project) ? $project->order_status : '') == '2', array('id' => 'form_order_status_2')) ?>
 			<?php echo Form::label('進行中', 'order_status_2') ?><br>
 
-			<?php echo Form::radio('order_status',3,Input::post('order_status') =='3', array('id' => 'form_order_status_3')) ?>
+			<?php echo Form::radio('order_status',3,Input::post('order_status',isset($project) ? $project->order_status : '') =='3', array('id' => 'form_order_status_3')) ?>
 			<?php echo Form::label('請求済', 'order_status_3') ?><br>
 
-			<?php echo Form::radio('order_status',4,Input::post('order_status') == '4', array('id' => 'form_order_status_4')) ?>
+			<?php echo Form::radio('order_status',4,Input::post('order_status',isset($project) ? $project->order_status : '') == '4', array('id' => 'form_order_status_4')) ?>
 			<?php echo Form::label('完了', 'order_status_4') ?><br>
 
-			<?php echo Form::radio('order_status',5,Input::post('order_status') == '5', array('id' => 'form_order_status_5')) ?>
+			<?php echo Form::radio('order_status',5,Input::post('order_status',isset($project) ? $project->order_status : '') == '5', array('id' => 'form_order_status_5')) ?>
 			<?php echo Form::label('失注', 'order_status_5') ?><br>
 		</div>
 

@@ -17,6 +17,9 @@ class Controller_Projects extends Controller_Template
 		$viewData = $this->createViewData();
 		$data['client_data'] = $viewData['client_data'];
 		$data['members_name'] = $viewData['members_name'];
+		// array_splice($data['members_name'] , 0, 0, 'PMを選択してください');
+		
+
 
 		//プロジェクトの合計金額
 		$query = DB::select(\DB::expr('SUM(price) AS total'))->from('projects')->where('price_flag',0)->execute()->as_array();
@@ -30,9 +33,7 @@ class Controller_Projects extends Controller_Template
 		// $refineEndDay = '';
 		// $period = DB::select('id')->from('projects')->where('start_date','<',$refineStartDay)->where('delivery_date','<',$refineEndDay)->execute();
 
-		// $period = DB::select('id')->from('projects')->where('start_date','>=',20200407)->where('delivery_date','<=',20200430)->execute();
-
-		// var_dump($period);
+		$period = DB::select()->from('projects')->where('start_date','>=',20200407)->where('delivery_date','<=',20200430)->execute();
 
 
 		$this->template->title = "Projects";
@@ -113,6 +114,7 @@ class Controller_Projects extends Controller_Template
 			else
 			{
 				Session::set_flash('error', $val->error());
+				
 			}
 		}
 
@@ -125,7 +127,8 @@ class Controller_Projects extends Controller_Template
 	{
 		$viewData = $this->createViewData();
 		$data['client_data'] = $viewData['client_data'];
-		$data['members_name'] = $viewData['members_name'];
+		$data['members_name'] = $viewData['members_name'];		
+
 		$data['today'] = date("Ymd");
 		$data['lastDayOfMonth'] = date("Ymt");
 
@@ -229,7 +232,8 @@ class Controller_Projects extends Controller_Template
 	//viewで渡すデーターをオブジェクト化
 	public function createViewData()
 	{
-		$tmp=Model_Client::find('all',['select'=>['id','client_name']]);
+		// $tmp=Model_Client::find('all',['select'=>['id','client_name']],['order_by'=>['client_name'=>'asc']]);
+		$tmp = DB::select()->from('clients')->order_by('client_name','asc')->execute()->as_array();
 		foreach($tmp as $value){
 			$data['client_data'][$value['id']] = $value['client_name'];
 		}

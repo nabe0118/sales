@@ -13,8 +13,9 @@ class Create_posts
 			'summary' => array('null' => false, 'type' => 'text'),
 			'body' => array('null' => false, 'type' => 'text'),
 			'user_id' => array('constraint' => '11', 'null' => false, 'type' => 'int'),
-			'created_at' => array('constraint' => '11', 'null' => false, 'type' => 'int'),
-			'updated_at' => array('constraint' => '11', 'null' => false, 'type' => 'int'),
+			'created_at' => array('null' => false, 'type' => 'datetime'),
+			'updated_at' => array('null' => false, 'type' => 'datetime'),
+
 		), array('id'));
 	}
 

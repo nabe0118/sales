@@ -12,11 +12,12 @@ class Create_users
 			'password' => array('constraint' => 255, 'null' => false, 'type' => 'varchar'),
 			'group' => array('constraint' => 11, 'null' => false, 'type' => 'int'),
 			'email' => array('constraint' => 255, 'null' => false, 'type' => 'varchar'),
-			'last_login' => array('constraint' => 11, 'null' => false, 'type' => 'int'),
+			'last_login' => array('null' => false, 'type' => 'date'),
 			'login_hash' => array('constraint' => 255, 'null' => false, 'type' => 'varchar'),
 			'profile_fields' => array('null' => false, 'type' => 'text'),
-			'created_at' => array('constraint' => 11, 'null' => true, 'type' => 'int', 'unsigned' => true),
-			'updated_at' => array('constraint' => 11, 'null' => true, 'type' => 'int', 'unsigned' => true),
+			'created_at' => array('null' => false, 'type' => 'datetime'),
+			'updated_at' => array('null' => false, 'type' => 'datetime'),
+
 		), array('id'));
 	}
 

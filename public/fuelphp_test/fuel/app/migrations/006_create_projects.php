@@ -12,8 +12,8 @@ class Create_projects
 			'client_id' => array('constraint' => '11', 'null' => false, 'type' => 'int'),
 			'technology' => array('constraint' => '255', 'null' => false, 'type' => 'varchar'),
 			'development' => array('constraint' => '11', 'null' => false, 'type' => 'int'),
-			'start_date' => array('constraint' => '11', 'null' => false, 'type' => 'int'),
-			'delivery_date' => array('constraint' => '11', 'null' => false, 'type' => 'int'),
+			'start_date' => array('null' => false, 'type' => 'date'),
+			'delivery_date' => array('null' => false, 'type' => 'date'),
 			'price' => array('constraint' => '11', 'null' => false, 'type' => 'int'),
 			'price_section' => array('constraint' => '11', 'null' => false, 'type' => 'int'),
 			'price_flag' => array('constraint' => '11', 'null' => false, 'type' => 'int'),
@@ -23,8 +23,9 @@ class Create_projects
 			'user' => array('constraint' => '255', 'null' => false, 'type' => 'varchar'),
 			'memo' => array('null' => false, 'type' => 'text'),
 			'is_deleted' => array('null' => false, 'type' => 'boolean'),
-			'created_at' => array('constraint' => '11', 'null' => false, 'type' => 'int'),
-			'updated_at' => array('constraint' => '11', 'null' => false, 'type' => 'int'),
+			'created_at' => array('null' => false, 'type' => 'datetime'),
+			'updated_at' => array('null' => false, 'type' => 'datetime'),
+
 		), array('id'));
 	}
 

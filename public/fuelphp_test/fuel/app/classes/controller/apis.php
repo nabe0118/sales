@@ -6,37 +6,33 @@
 class Controller_Apis extends \Controller_Rest
 {
     
-	public function put_refineday()
+	public function post_refineday()
 	{
 		$this->format = 'json';
 		$request = Input::json('all');
-		// $data = array('data'=>var_dump($request));		
-		// 'form' => input::post('form'),
-		// 'to' =>input::post('to')
-		
-		// $data['projects'] = Model_Project::find('all');
-		$data = Model_Project::find('all');
 
-		// $data['index_order_status'] = Model_Project::$order_status;
-		// $data['index_order_expectation'] = Model_Project::$order_expectation;
+		//日付絞り込み
+		$refineStart = Input::post('from');
+		$refineEnd = Input::post('to');
+	
+
+		$data = DB::select()
+				->from('projects')
+				->where('start_date','>=',$refineStart)
+				->and_where('delivery_date','<=',$refineEnd)
+				->execute();
 
 		$viewData = $this->createViewData();
-		// $data['client_data'] = $viewData['client_data'];
-		// $data['members_name'] = $viewData['members_name'];
 
-		foreach((array)$data as $value)
+		$data2 = [];
+		foreach($data as $value)
 		{
 
 			foreach($viewData['members_name'] as $employee_id => $members_name)
 			{
-				// \Log::info($value['employee_id'].':'.$employee_id);
-
 				if($value['employee_id']== $employee_id)
 				{
-					
 					$value['members_name'] = $members_name;
-					// \Log::info($value['members_name']);
-
 				break;
 				} 
 			}
@@ -51,21 +47,23 @@ class Controller_Apis extends \Controller_Rest
 				} 
 			}
 
+
+			//日付に/を入れる
+			$value['start_date'] = date('Y/m/d',strtotime($value['start_date']));
+			$value['delivery_date'] = date('Y/m/d',strtotime($value['delivery_date']));
+
+			//金額に,を入れる
+			// $value['price_kari'] = number_format($value['price']);
+			// $value['price'] = number_format($value['price']);
+
 			$value['price_kari'] = $value['price'];
 
 			if($value['price_flag'])
 			{
-				$value['price_kari'] = '---------';
+				$value['price_kari'] = 0;
 			}else{
-				$value['price'] = '---------';
+				$value['price'] = 0;
 			}
-			\Log::info($value['price_kari'].':'.$value['price']);
-
-
-
-			// \Log::info($value['price_flag']);
-
-
 
 
 			switch($value['order_status'])
@@ -106,24 +104,44 @@ class Controller_Apis extends \Controller_Rest
 				break;
 			}
 
-
+			$data2[] = $value; 
 
 		}
-		
-		
-
-
-		// //日付絞り込み
-		// // $refineStartDay = '';
-		// // $refineEndDay = '';
-		// // $period = DB::select('id')->from('projects')->where('start_date','<',$refineStartDay)->where('delivery_date','<',$refineEndDay)->execute();
-
-		// $period = DB::select('id')->from('projects')->where('start_date','>=',20200407)->where('delivery_date','<=',20200430)->execute();
-
-		// var_dump($period);
-
-		return $this->response($data) ;
+		return $this->response($data2) ;
 	}
+
+
+		public function post_allmembers()
+		{
+			$this->format = 'json';
+			$membersdata = Model_Member::find('all');
+
+			Log::info(print_r($membersdata,true));
+
+			$data3 = [];
+			foreach($membersdata as $value)
+			{
+
+				if($value['authority'] == 1)
+				{
+					$value['authority'] = '管理';
+				}else{
+					$value['authority'] = '一般';
+				}
+
+
+				if($value['tenure_flag'] == 1)
+				{
+					$value['tenure_flag'] = '在籍';
+				}else{
+					$value['tenure_flag'] = '退職';
+				}
+				$data3[] = $value; 
+			}
+
+		return $this->response($data3) ;
+
+		}
 
 		//viewで渡すデーターをオブジェクト化
 		public function createViewData()

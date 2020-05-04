@@ -45,18 +45,22 @@ class Model_User extends \Orm\Model
 		),
 	);
 
-	protected static $_observers = array(
-		'Orm\Observer_CreatedAt' => array(
-			'events' => array('before_insert'),
-			'property' => 'created_at',
-			'mysql_timestamp' => false,
-		),
-		'Orm\Observer_UpdatedAt' => array(
-			'events' => array('before_update'),
-			'property' => 'updated_at',
-			'mysql_timestamp' => false,
-		),
-	);
+	// protected static $_observers = array(
+	// 	'Orm\Observer_CreatedAt' => array(
+	// 		'events' => array('before_insert'),
+	// 		'property' => 'created_at',
+	// 		'mysql_timestamp' => false,
+	// 	),
+	// 	'Orm\Observer_UpdatedAt' => array(
+	// 		'events' => array('before_update'),
+	// 		'property' => 'updated_at',
+	// 		'mysql_timestamp' => false,
+	// 	),
+	// );
+
+	protected static $_created_at = 'created_at';
+	protected static $_updated_at = 'updated_at';
+	protected static $_mysql_timestamp = true;
 
 	protected static $_table_name = 'users';
 

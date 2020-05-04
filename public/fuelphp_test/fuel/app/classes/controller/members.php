@@ -4,9 +4,20 @@ class Controller_Members extends Controller_Template
 
 	public function action_index()
 	{
-		$data['members'] = Model_Member::find('all');
+		// $data['members'] = Model_Member::find('all');
+
+		//在職中のメンバーのみ表示
+		$data['members'] = Model_Member::find('all', array(
+			'where' => array(
+				array('tenure_flag', 1),
+			),
+		));
+
+
+
 		//権限を数字から文字に変更
 		$data['kenngen'] = Model_Member::$authority;
+		$data['zaiseki'] = Model_Member::$tenure_flag;
 		$this->template->title = "Members";
 		$this->template->content = View::forge('members/index', $data);
 
@@ -43,11 +54,20 @@ class Controller_Members extends Controller_Template
 					'password' => Input::post('password'),
 					'authority' => Input::post('authority'),
 					'affiliation' => false,
-					'tenure_flag' => false,
+					'tenure_flag' => Input::post('tenure_flag'),
 					'user_remarks' => false,
 					'hire_date' => false,
 					'is_deleted' => false,
 				));
+
+				if($member['hire_date'] == 0)
+				{
+					$member['hire_date'] =date('Y-m-d');
+				}
+
+				if($member['tenure_flag'] == null){
+					$member['tenure_flag'] = 1;
+				}
 
 				if ($member and $member->save())
 				{
@@ -83,6 +103,8 @@ class Controller_Members extends Controller_Template
 			Response::redirect('members');
 		}
 
+
+
 		$val = Model_Member::validate('edit');
 
 		if ($val->run())
@@ -94,10 +116,24 @@ class Controller_Members extends Controller_Template
 			$member->password = Input::post('password');
 			$member->authority = Input::post('authority');
 			$member->affiliation = false;
-			$member->tenure_flag = false;
+			$member->tenure_flag = Input::post('tenure_flag');
 			$member->user_remarks = false;
 			$member->hire_date = false;
 			$member->is_deleted = false;
+
+			if($member['hire_date'] == 0)
+			{
+				$member['hire_date'] =date('Y-m-d');
+			}
+
+
+			if($member['is_deleted'] == null){
+				$member['is_deleted'] = 0;
+			}
+
+			if($member['tenure_flag'] == null){
+				$member['tenure_flag'] = 1;
+			}
 
 			if ($member->save())
 			{

@@ -17,10 +17,11 @@ class Create_members
 			'affiliation' => array('constraint' => '11', 'null' => false, 'type' => 'int'),
 			'tenure_flag' => array('constraint' => '11', 'null' => false, 'type' => 'int'),
 			'user_remarks' => array('null' => false, 'type' => 'text'),
-			'hire_date' => array('constraint' => '11', 'null' => false, 'type' => 'int'),
+			'hire_date' => array('null' => false, 'type' => 'date'),
 			'is_deleted' => array('null' => false, 'type' => 'boolean'),
-			'created_at' => array('constraint' => '11', 'null' => false, 'type' => 'int'),
-			'updated_at' => array('constraint' => '11', 'null' => false, 'type' => 'int'),
+			'created_at' => array('null' => false, 'type' => 'datetime'),
+			'updated_at' => array('null' => false, 'type' => 'datetime'),
+
 		), array('id'));
 	}
 

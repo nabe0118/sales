@@ -27,13 +27,17 @@ class Model_Project extends Model
 	protected static $_observers = array(
 		'Orm\Observer_CreatedAt' => array(
 			'events' => array('before_insert'),
-			'mysql_timestamp' => false,
+			'mysql_timestamp' => true,
 		),
 		'Orm\Observer_UpdatedAt' => array(
 			'events' => array('before_save'),
-			'mysql_timestamp' => false,
+			'mysql_timestamp' => true,
 		),
 	);
+
+	protected static $_created_at = 'created_at';
+	protected static $_updated_at = 'updated_at';
+	protected static $_mysql_timestamp = true;
 
 
 
