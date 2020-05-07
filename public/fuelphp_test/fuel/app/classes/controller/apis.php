@@ -6,22 +6,39 @@
 class Controller_Apis extends \Controller_Rest
 {
     
-	public function post_refineday()
+	public function get_refineday()
 	{
 		$this->format = 'json';
 		$request = Input::json('all');
+		$input_cond =  Input::get('cond');
+		$input_order_by = input::get('order_by');
 
 		//日付絞り込み
-		$refineStart = Input::post('from');
-		$refineEnd = Input::post('to');
+		$refineStart = $input_cond['from'];
+		$refineEnd = $input_cond['to'];
+		$order_expectation = $input_cond['order_expectation'];
+		$order_status = $input_cond['order_status'];
 	
+		$query = DB::select()->from('projects')->where('id','>',0);
+		if ($refineStart) {
+			$query->and_where('delivery_date','>=',$refineStart);
+		}
+		if ($refineEnd) {
+			$query->and_where('delivery_date','<=',$refineEnd);
+		}
+		if ($order_expectation) {
+			$query->and_where('order_expectation','in',$order_expectation);
+		}
+		if ($order_status) {
+			$query->and_where('order_status','in',$order_status);
+		}
+		if($input_order_by){
+			$query->order_by($input_order_by['field'],$input_order_by['order_by']);
+		}
 
-		$data = DB::select()
-				->from('projects')
-				->where('start_date','>=',$refineStart)
-				->and_where('delivery_date','<=',$refineEnd)
-				->execute();
+		$data = $query->execute();
 
+		
 		$viewData = $this->createViewData();
 
 		$data2 = [];
@@ -72,7 +89,7 @@ class Controller_Apis extends \Controller_Rest
 				$value['order_status'] = '商談中';
 				break;
 				case 2;
-				$value['order_status'] = '進行中';
+				$value['order_status'] = '受注';
 				break;
 				case 3;
 				$value['order_status'] = '請求済';
@@ -111,10 +128,25 @@ class Controller_Apis extends \Controller_Rest
 	}
 
 
-		public function post_allmembers()
+		public function get_allmembers()
 		{
 			$this->format = 'json';
-			$membersdata = Model_Member::find('all');
+			$input_cond =  Input::get('cond');
+			$input_order_by = input::get('order_by');
+
+			$checked = $input_cond['flag'];
+			$query = DB::select()->from('members')->where('id','>',0);
+			
+
+			if($checked != 1){
+				$query->and_where('tenure_flag','=',1);
+			}		
+			if($input_order_by){
+				$query->order_by($input_order_by['field'],$input_order_by['order_by']);
+			}
+
+			$membersdata = $query->execute();
+
 
 			Log::info(print_r($membersdata,true));
 

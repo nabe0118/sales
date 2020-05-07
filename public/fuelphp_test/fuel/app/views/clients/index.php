@@ -48,5 +48,6 @@
 
 <?php endif; ?><p>
 	<?php echo Html::anchor('clients/create', 'クライアント新規追加', array('class' => 'btn btn-success')); ?>
-
 </p>
+
+

@@ -5,31 +5,31 @@
 		<div class="form-group">
 			<?php echo Form::label('メンバー名', 'full_name', array('class'=>'control-label')); ?>
 
-				<?php echo Form::input('full_name', Input::post('full_name', isset($member) ? $member->full_name : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'渡邊直登')); ?>
+			<?php echo Form::input('full_name', Input::post('full_name', isset($member) ? $member->full_name : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'渡邊直登')); ?>
 
 		</div>
 		<div class="form-group">
 			<?php echo Form::label('フリガナ', 'name_kana', array('class'=>'control-label')); ?>
 
-				<?php echo Form::input('name_kana', Input::post('name_kana', isset($member) ? $member->name_kana : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'ワタナベナオト')); ?>
+			<?php echo Form::input('name_kana', Input::post('name_kana', isset($member) ? $member->name_kana : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'ワタナベナオト')); ?>
 
 		</div>
 		<div class="form-group">
 			<?php echo Form::label('メールアドレス', 'email', array('class'=>'control-label')); ?>
 
-				<?php echo Form::input('email', Input::post('email', isset($member) ? $member->email : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'watanabe.n@marietta.co.jp')); ?>
+			<?php echo Form::input('email', Input::post('email', isset($member) ? $member->email : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'watanabe.n@marietta.co.jp')); ?>
 
 		</div>
 		<div class="form-group">
 			<?php echo Form::label('パスワード', 'password', array('class'=>'control-label')); ?>
 
-				<?php echo Form::input('password', Input::post('password', isset($member) ? str_repeat("*",mb_strlen($member->name_kana,"UTF8")) : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'123456')); ?>
+			<?php echo Form::input('password', Input::post('password', isset($member) ? str_repeat("*",mb_strlen($member->name_kana,"UTF8")) : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'123456')); ?>
 
 		</div>
 		<div class="form-group">
 			<?php echo Form::label('社員番号', 'employee_id', array('class'=>'control-label')); ?>
 
-				<?php echo Form::input('employee_id', Input::post('employee_id', isset($member) ? $member->employee_id : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'000101')); ?>
+			<?php echo Form::input('employee_id', Input::post('employee_id', isset($member) ? $member->employee_id : ''), array('class' => 'col-md-4 form-control', 'maxlength'=>6,'placeholder'=>'000101')); ?>
 
 		</div>
 		<div class="form-group">

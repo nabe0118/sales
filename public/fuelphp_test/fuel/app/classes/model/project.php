@@ -50,7 +50,7 @@ class Model_Project extends Model
 	public static $price_section = [
 		1 => '請負',
 		2 => '保守',
-		3 => '社内保持',
+		3 => '社内持出',
 	];
 
 	public static $price_flag = [
@@ -69,7 +69,7 @@ class Model_Project extends Model
 
 	public static $order_status = [
 		1 => '商談中',
-		2 => '進行中',
+		2 => '受注',
 		3 => '請求済',
 		4 => '完了',
 		5 => '失注',
@@ -120,10 +120,10 @@ class Model_Project extends Model
 		$val = Validation::forge($factory);
 		$val->add_field('project_name', 'Project Name', 'required|max_length[255]');
 		$val->add_field('client_id', 'Client Id', 'required|valid_string[numeric]');
-		$val->add_field('technology', 'Technology', 'required|max_length[255]');
-		$val->add_field('development', 'Development', 'required|valid_string[numeric]');
-		$val->add_field('start_date', 'Start Date', 'required|valid_string[numeric]');
-		$val->add_field('delivery_date', 'Delivery Date', 'required|valid_string[numeric]');
+		$val->add_field('technology', 'Technology', 'max_length[255]');
+		$val->add_field('development', 'Development', 'valid_string[numeric]');
+		$val->add_field('start_date', 'Start Date', 'required');
+		$val->add_field('delivery_date', 'Delivery Date', 'required');
 		$val->add_field('price', 'Price', 'required|valid_string[numeric]');
 		$val->add_field('price_section', 'Price Section', 'required|valid_string[numeric]');
 		$val->add_field('price_flag', 'Price Flag', 'valid_string[numeric]');

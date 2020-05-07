@@ -18,18 +18,12 @@
 <table class="table table-striped">
 	<thead>
 		<tr>
-			<th>社員ID</th>
+			<th id = 'employee_id' class = 'sorting_desc sorttable'>社員ID</th>
 			<th>氏名</th>
-			<th>フリガナ</th>
+			<th id = 'name_kana' class = 'sorting_desc sorttable'>フリガナ</th>
 			<th>Email</th>
 			<th>権限</th>
 			<th>在籍</th>
-			<!-- <th>Password</th> -->
-			<!-- <th>所属</th> -->
-			<!-- <th>備考</th> -->
-			<!-- <th>入社日</th> -->
-			<!-- <th>Is deleted</th> -->
-			<th>&nbsp;</th>
 		</tr>
 	</thead>
 	<tbody id = all-members>
@@ -41,19 +35,6 @@
 			<td><?php echo $item->email; ?></td>
 			<td><?php echo $kenngen[$item->authority]; ?></td>
 			<td><?php echo $zaiseki[$item->tenure_flag]; ?></td>
-			<td><?php // echo $zaiseki[$item->tenure_flag]= '0' ? '退職' : $zaiseki[$item->tenure_flag]; ?></td>
-
-			<td>
-				<div class="btn-toolbar">
-					<div class="btn-group">
-						<!-- 詳細はレコード全体をリンクにする -->
-						<!-- 削除は論理削除をするのでとりあえずコメントアウト -->
-						<?php echo Html::anchor('members/edit/'.$item->id, '<i class="icon-wrench"></i> 詳細', array('class' => 'btn btn-default btn-sm')); ?>						
-						<?php /* echo Html::anchor('members/delete/'.$item->id, '<i class="icon-trash icon-white"></i> 削除', array('class' => 'btn btn-sm btn-danger', 'onclick' => "return confirm('本当に削除しますか?')")); */?>					
-					</div>
-				</div>
-
-			</td>
 		</tr>
 <?php endforeach; ?>	
 	</tbody>
@@ -70,24 +51,32 @@
 <script >
 'use strict';
 
-(function($){
-	$("#allMembers").on('change', function(){
-
-	var request_url = '<?php echo Uri::create('apis/allmembers') ?>',
-
-	//meta[name="csrf-token"]要素にcontent属性を追加
-	token       = $('meta[name="csrf-token"]').attr('content');
-	var data = '';
 
 
-	$.ajaxSetup({
-		headers: { 'X-CSRF-TOKEN': token }
-	});
+
+var execOderField = null;
+var execOderBy = null;
+
+function ajaxDoMember(order_by){
+	var request_url = '<?php echo Uri::create('apis/allmembers') ?>';
+
+	if ($("#allMembers").prop("checked") == true) {
+			var checked = 1;
+	}else{
+			var checked = 0;
+	}
+
+	var cond = {'flag' : checked};
 
 
-$.ajax({
+	var data = {
+		cond : cond,
+		order_by : order_by
+	};
+
+	$.ajax({
 	url : request_url,
-	type : "POST",
+	type : "GET",
 	data: data,
 	dataType: "json",
 	// processData: false,
@@ -105,20 +94,38 @@ $.ajax({
 			hd += '</tr>';
 
 			$('#all-members').append(hd);
-
 		})
-		console.log(data);
-
-
-
-
-},
+	},
   //失敗した場合
 	error : function(XMLHttpRequest, textStatus, errorThrown) {
 		alert("エラーが発生しました：" + textStatus + ":\n" + errorThrown);
 	}
 });
-});
+}
+
+(function($){
+	$("#allMembers").on('change', function(){
+		ajaxDoMember({});
+
+	});
+
+	$(".sorttable").on('click',function(){
+		var fieldText = $(this).attr('id');
+		execOderField = fieldText;
+
+		if(execOderField == fieldText && execOderBy == 'asc'){
+			$(this).removeClass("sorting_asc").addClass("sorting_desc")
+			execOderBy = 'desc';
+		}else{
+			$(this).removeClass("sorting_desc").addClass("sorting_asc")
+			execOderBy = 'asc';
+		}
+
+		ajaxDoMember({
+			'field': execOderField,
+			'order_by': execOderBy
+		});
+	});
 
 
 })(jQuery);

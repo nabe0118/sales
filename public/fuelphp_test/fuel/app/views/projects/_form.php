@@ -1,4 +1,4 @@
-<?php echo Form::open(array("class"=>"form-horizontal")); ?>
+<?php echo Form::open(); ?>
 
 	<fieldset>
 
@@ -12,24 +12,23 @@
 		<div class="form-group">
 			<?php echo Html::anchor('clients/index', 'クライアント'); ?>
 			<?php  /* echo Form::label('クライアント', 'client_id', array('class'=>'control-label')); */ ?>
-			<?php echo Form::select('client_id', 0, $client_data);?>
-			
+			<?php echo Form::select('client_id', null, $client_data);?>
 		</div>
 
 		<div class="form-group">
 			<?php echo Html::anchor('members/index', 'PM'); ?>
 			<?php /* echo Form::label('PM', 'employee_id', array('class'=>'control-label')); */ ?>
-			<?php echo Form::select('employee_id', 0, $members_name); ?>
+			<?php echo Form::select('employee_id', null, $members_name); ?>
 		</div>
 
 		<div class="form-group">
 			<?php echo Form::label('開始', 'start_date', array('class'=>'control-label')); ?>
-			<?php echo Form::input('start_date', Input::post('start_date', isset($project) ? $project->start_date : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>$today)); ?>
+			<?php echo Form::input('start_date', Input::post('start_date', isset($project) ?  : ''), array('class' => 'col-md-4 form-control', 'type'=>'date','placeholder'=>$today)); ?>
 		</div>
 
 		<div class="form-group">
 			<?php echo Form::label('納期', 'delivery_date', array('class'=>'control-label')); ?>
-			<?php echo Form::input('delivery_date', Input::post('delivery_date', isset($project) ? $project->delivery_date : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>$lastDayOfMonth)); ?>
+			<?php echo Form::input('delivery_date', Input::post('delivery_date', isset($project) ? $project->delivery_date : ''), array('class' => 'col-md-4 form-control', 'type'=>'date','placeholder'=>$lastDayOfMonth)); ?>
 		</div>
 
 		<div class="form-group">
@@ -40,7 +39,10 @@
 		<div class="form-group">
 		<?php echo Form::label('種別', 'development', array('class'=>'control-label')); ?><br>
 
-		<?php echo Form::radio('development',1,Input::post('development',isset($project) ? $project->development : '') == '1' or (Input::post('development') == '' and !isset($project)) , array('id' => 'form_development_1')) ?>
+		<?php // echo Form::radio('development',1,Input::post('development',isset($project) ? $project->development : '') == '1' or (Input::post('development') == '' and !isset($project)), array('id' => 'form_development_1')) ?>
+		<?php // echo Form::label('フルスクラッチ', 'development_1') ?><br>
+
+		<?php echo Form::radio('development',1,Input::post('development',isset($project) ? $project->development : '') == '1', array('id' => 'form_development_1')) ?>
 		<?php echo Form::label('フルスクラッチ', 'development_1') ?><br>
 
 		<?php echo Form::radio('development',2,Input::post('development',isset($project) ? $project->development : '') == '2', array('id' => 'form_development_2')) ?>
@@ -60,7 +62,7 @@
 			<?php echo Form::label('保守', 'price_section_2') ?><br>
 
 			<?php echo Form::radio('price_section',3,Input::post('price_section',isset($project) ? $project->price_section : '') == '3', array('id' => 'form_price_section_3')) ?>
-			<?php echo Form::label('社内保持', 'price_section_3') ?><br>
+			<?php echo Form::label('社内持出', 'price_section_3') ?><br>
 		</div>
 
 		<div class="form-group">
@@ -89,7 +91,7 @@
 			<?php echo Form::label('商談中', 'order_status_1') ?><br>
 
 			<?php echo Form::radio('order_status',2,Input::post('order_status',isset($project) ? $project->order_status : '') == '2', array('id' => 'form_order_status_2')) ?>
-			<?php echo Form::label('進行中', 'order_status_2') ?><br>
+			<?php echo Form::label('受注', 'order_status_2') ?><br>
 
 			<?php echo Form::radio('order_status',3,Input::post('order_status',isset($project) ? $project->order_status : '') =='3', array('id' => 'form_order_status_3')) ?>
 			<?php echo Form::label('請求済', 'order_status_3') ?><br>

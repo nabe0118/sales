@@ -9,32 +9,19 @@ class Controller_Projects extends Controller_Template
 	public function action_index()
 	{
 		$data['projects'] = Model_Project::find('all');
-		
-
 		$data['index_order_status'] = Model_Project::$order_status;
 		$data['index_order_expectation'] = Model_Project::$order_expectation;
 
 		$viewData = $this->createViewData();
 		$data['client_data'] = $viewData['client_data'];
 		$data['members_name'] = $viewData['members_name'];
-		// array_splice($data['members_name'] , 0, 0, 'PMを選択してください');
 		
-
-
 		//プロジェクトの合計金額
 		$query = DB::select(\DB::expr('SUM(price) AS total'))->from('projects')->where('price_flag',0)->execute()->as_array();
 		$data['totalPriceEstimate'] = $query[0]['total'];
 
 		$query = DB::select(\DB::expr('SUM(price) AS total2'))->from('projects')->where('price_flag',1)->execute()->as_array();
 		$data['totalPriceConfirm'] = $query[0]['total2'];
-
-		//日付絞り込み
-		// $refineStartDay = '';
-		// $refineEndDay = '';
-		// $period = DB::select('id')->from('projects')->where('start_date','<',$refineStartDay)->where('delivery_date','<',$refineEndDay)->execute();
-
-		$period = DB::select()->from('projects')->where('start_date','>=',20200407)->where('delivery_date','<=',20200430)->execute();
-
 
 		$this->template->title = "Projects";
 		$this->template->content = View::forge('projects/index', $data);
@@ -59,6 +46,9 @@ class Controller_Projects extends Controller_Template
 		$viewData = $this->createViewData();
 		$data['client_data'] = $viewData['client_data'];
 		$data['members_name'] = $viewData['members_name'];
+		$data['members_name'] = array_merge([null => '選択してください'],$data['members_name']);
+		$data['client_data'] = array_merge([null => '選択してください'],$data['client_data']);
+
 		$data['today'] = date("Ymd");
 		$data['lastDayOfMonth'] = date("Ymt");
 
@@ -89,6 +79,9 @@ class Controller_Projects extends Controller_Template
 				if($project['price_flag'] == null){
 					$project['price_flag'] = 0;
 				}
+
+				Log::info($project['start_date']);
+				Log::info($project['delivery_date']);
 
 				//カレンダーを８桁の数字に戻す。
 				// $str = $project['start_date']
@@ -233,12 +226,14 @@ class Controller_Projects extends Controller_Template
 	public function createViewData()
 	{
 		// $tmp=Model_Client::find('all',['select'=>['id','client_name']],['order_by'=>['client_name'=>'asc']]);
-		$tmp = DB::select()->from('clients')->order_by('client_name','asc')->execute()->as_array();
-		foreach($tmp as $value){
+		$client_names = DB::select()->from('clients')->order_by('client_kana','asc')->execute()->as_array();
+		foreach($client_names as $value){
 			$data['client_data'][$value['id']] = $value['client_name'];
 		}
 
-		$members=Model_Member::find('all',['select'=>['employee_id','full_name']]);
+		// $members = Model_Member::find('all',['select'=>['employee_id','full_name']]);
+		$members = DB::select()->from('members')->order_by('name_kana','asc')->execute()->as_array();
+
 		foreach($members as $member){
 			$data['members_name'][$member['employee_id']] = $member['full_name'];
 		}
