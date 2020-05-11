@@ -32,24 +32,25 @@
 		<div class="remodal" data-remodal-id="modalA" data-remodal-options="closeOnOutsideClick:false" data-classname="ajaxCondStatusOptions">
 			<h3>ステータス選択</h3>
 			<div id="modalACondBox">
-				<?php // echo Form::checkbox('order_expectation', 'すべて', null, array('class' => 'ajaxCondOptions')); ?>
-				<?php // echo Form::label('すべて', 'order_expectation_checkbox'); ?><br>
+				<?php echo Form::checkbox('category_status_all', 'すべて', null, array('class' => 'category_status_all','id'=>'category_status_all')); ?>
+				<?php echo Form::label('すべて', 'category_status_all'); ?><br>
 
-				<?php echo Form::checkbox('order_status', '商談中', true,array('class' => 'ajaxCondStatusOptions',"data-value"=>"1", "data-label"=>"商談中")); ?>
-				<?php echo Form::label('商談中', 'order_status_checkbox2'); ?><br>
+				<div id="categories_status">
+					<?php echo Form::checkbox('order_status', '商談中', true,array('class' => 'ajaxCondStatusOptions',"data-value"=>"1", "data-label"=>"商談中")); ?>
+					<?php echo Form::label('商談中', 'order_status_checkbox2'); ?><br>
 
-				<?php echo Form::checkbox('order_status', '受注', true, array('class' => 'ajaxCondStatusOptions',"data-value"=>"2", "data-label"=>"受注")); ?>
-				<?php echo Form::label('受注', 'order_status_checkbox3'); ?><br>
+					<?php echo Form::checkbox('order_status', '受注', true, array('class' => 'ajaxCondStatusOptions',"data-value"=>"2", "data-label"=>"受注")); ?>
+					<?php echo Form::label('受注', 'order_status_checkbox3'); ?><br>
 
-				<?php echo Form::checkbox('order_status', '請求済', true, array('class' => 'ajaxCondStatusOptions',"data-value"=>"3", "data-label"=>"請求済")); ?>
-				<?php echo Form::label('請求済', 'order_status_checkbox4'); ?><br>
+					<?php echo Form::checkbox('order_status', '請求済', true, array('class' => 'ajaxCondStatusOptions',"data-value"=>"3", "data-label"=>"請求済")); ?>
+					<?php echo Form::label('請求済', 'order_status_checkbox4'); ?><br>
 
-				<?php echo Form::checkbox('order_status', '完了', false, array('class' => 'ajaxCondStatusOptions',"data-value"=>"4", "data-label"=>"完了")); ?>
-				<?php echo Form::label('完了', 'order_status_checkbox5'); ?><br>
+					<?php echo Form::checkbox('order_status', '完了', false, array('class' => 'ajaxCondStatusOptions',"data-value"=>"4", "data-label"=>"完了")); ?>
+					<?php echo Form::label('完了', 'order_status_checkbox5'); ?><br>
 
-				<?php echo Form::checkbox('order_status', '失注', false, array('class' => 'ajaxCondStatusOptions',"data-value"=>"5", "data-label"=>"失注")); ?>
-				<?php echo Form::label('失注', 'order_status_checkbox5'); ?>
-
+					<?php echo Form::checkbox('order_status', '失注', false, array('class' => 'ajaxCondStatusOptions',"data-value"=>"5", "data-label"=>"失注")); ?>
+					<?php echo Form::label('失注', 'order_status_checkbox5'); ?>
+				</div>
 			</div>
 				<button id="modalANg" data-remodal-action="cancel" class="remodal-cancel">Cancel</button>
 				<button id="modalAOk" data-remodal-action="confirm" class="remodal-confirm">OK</button>
@@ -57,24 +58,25 @@
 		<div class="remodal" data-remodal-id="modalB" data-remodal-options="closeOnOutsideClick:false" data-classname="ajaxCondExpectationOptions">
 			<h3>確度選択</h3>
 			<div id="modalBCondBox">
-				<?php // echo Form::checkbox('name', 'すべて', null, array('class' => 'ajaxCondOptions',"data-value"=>"1", "data-label"=>"注文有")); ?>
-				<?php // echo Form::label('すべて', 'order_status_checkbox'); ?><br>
+				<?php echo Form::checkbox('name', 'すべて', true, array('class' => 'ajaxCondOptions','id'=>'category_expectation_all')); ?>
+				<?php echo Form::label('すべて', 'order_status_checkbox'); ?><br>
 
-				<?php echo Form::checkbox('order_expectation', '低', true, array('class' => 'ajaxCondExpectationOptions',"data-value"=>"1", "data-label"=>"低")); ?>
-				<?php echo Form::label('低', 'order_expectation_checkbox2'); ?><br>
+				<div id="categories_expectation">
+					<?php echo Form::checkbox('order_expectation', '低', true, array('class' => 'ajaxCondExpectationOptions',"data-value"=>"1", "data-label"=>"低")); ?>
+					<?php echo Form::label('低', 'order_expectation_checkbox2'); ?><br>
 
-				<?php echo Form::checkbox('order_expectation', '中', true, array('class' => 'ajaxCondExpectationOptions',"data-value"=>"2", "data-label"=>"中")); ?>
-				<?php echo Form::label('中', 'order_expectation_checkbox3'); ?><br>
+					<?php echo Form::checkbox('order_expectation', '中', true, array('class' => 'ajaxCondExpectationOptions',"data-value"=>"2", "data-label"=>"中")); ?>
+					<?php echo Form::label('中', 'order_expectation_checkbox3'); ?><br>
 
-				<?php echo Form::checkbox('order_expectation', '高', true, array('class' => 'ajaxCondExpectationOptions',"data-value"=>"3", "data-label"=>"高")); ?>
-				<?php echo Form::label('高', 'order_expectation_checkbox4'); ?><br>
+					<?php echo Form::checkbox('order_expectation', '高', true, array('class' => 'ajaxCondExpectationOptions',"data-value"=>"3", "data-label"=>"高")); ?>
+					<?php echo Form::label('高', 'order_expectation_checkbox4'); ?><br>
 
-				<?php echo Form::checkbox('order_expectation', '内示', true, array('class' => 'ajaxCondExpectationOptions',"data-value"=>"4", "data-label"=>"内示")); ?>
-				<?php echo Form::label('内示', 'order_expectation_checkbox5'); ?><br>
+					<?php echo Form::checkbox('order_expectation', '内示', true, array('class' => 'ajaxCondExpectationOptions',"data-value"=>"4", "data-label"=>"内示")); ?>
+					<?php echo Form::label('内示', 'order_expectation_checkbox5'); ?><br>
 
-				<?php echo Form::checkbox('order_expectation', '注文有', true, array('class' => 'ajaxCondExpectationOptions',"data-value"=>"5", "data-label"=>"注文有")); ?>
-				<?php echo Form::label('注文有', 'order_expectation_checkbox5'); ?>
-
+					<?php echo Form::checkbox('order_expectation', '注文有', true, array('class' => 'ajaxCondExpectationOptions',"data-value"=>"5", "data-label"=>"注文有")); ?>
+					<?php echo Form::label('注文有', 'order_expectation_checkbox5'); ?>
+				</div>
 			</div>
 			<button id="modalBNg" data-remodal-action="cancel" class="remodal-cancel">Cancel</button>
 			<button id="modalBOk" data-remodal-action="confirm" class="remodal-confirm">OK</button>
@@ -165,10 +167,32 @@
 		}
 	});
 
-
-	$('#all').on("click",function(){
-    $('.list').prop("checked", $(this).prop("checked"));
+	//ステータス全件check
+	$('#category_status_all').on('click', function() {
+		$('.ajaxCondStatusOptions').prop('checked', this.checked);
 	});
+
+	$('.ajaxCondStatusOptions').on('click', function() {
+		if ($('#categories_status :checked').length == $('#categories_status :input').length){
+			$('#category_status_all').prop('checked', 'checked');
+		}else{
+			$('#category_status_all').prop('checked', false);
+		}
+	});
+
+	//確度全件check
+	$('#category_expectation_all').on('click', function() {
+		$('.ajaxCondExpectationOptions').prop('checked', this.checked);
+	});
+
+	$('.ajaxCondExpectationOptions').on('click', function() {
+		if ($('#categories_status :checked').length == $('#categories_status :input').length){
+			$('#category_expectation_all').prop('checked', 'checked');
+		}else{
+			$('#category_expectation_all').prop('checked', false);
+		}
+	});
+
 
 	$(".sorttable").on('click',function(){
 		var fieldText = $(this).attr('id');
@@ -200,8 +224,8 @@
 		if( $('input[type="checkbox"].'+modal.data("classname")+':checked').length > 0 ) {
 			ajaxDoProject({});
 		} else {
+			alert('条件つけてください');
 			$(this).stop();
-			// alert('条件つけてください');
 			return false;
 		}		
 	});
