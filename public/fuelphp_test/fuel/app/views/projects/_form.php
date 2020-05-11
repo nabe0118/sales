@@ -50,6 +50,7 @@
 
 		<?php echo Form::radio('development',3,Input::post('development',isset($project) ? $project->development : '') == '3', array('id' => 'form_development_3')) ?>
 		<?php echo Form::label('パッケージ', 'development_1') ?><br>
+
 		</div>
 
 		<div class="form-group">
@@ -63,6 +64,7 @@
 
 			<?php echo Form::radio('price_section',3,Input::post('price_section',isset($project) ? $project->price_section : '') == '3', array('id' => 'form_price_section_3')) ?>
 			<?php echo Form::label('社内持出', 'price_section_3') ?><br>
+
 		</div>
 
 		<div class="form-group">
@@ -81,6 +83,7 @@
 			<?php echo Form::label('内示', 'order_expectation_4') ?><br>
 
 			<?php echo Form::radio('order_expectation',5,Input::post('order_expectation',isset($project) ? $project->order_expectation : '') == '5', array('id' => 'form_order_expectation_5')) ?>
+
 			<?php echo Form::label('注文有', 'order_expectation_5') ?><br>
 		</div>
 
@@ -100,6 +103,7 @@
 			<?php echo Form::label('完了', 'order_status_4') ?><br>
 
 			<?php echo Form::radio('order_status',5,Input::post('order_status',isset($project) ? $project->order_status : '') == '5', array('id' => 'form_order_status_5')) ?>
+
 			<?php echo Form::label('失注', 'order_status_5') ?><br>
 		</div>
 

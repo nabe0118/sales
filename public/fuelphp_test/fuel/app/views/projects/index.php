@@ -251,7 +251,6 @@ function ajaxDoProject(order_by){
                     });
 					$('#condtextStatus').html(condtextStatus);
 
-
 	$('input[type="checkbox"].ajaxCondExpectationOptions:checked')
                     .each(function (i, e) {
                         if (!cond[$(e).attr('name')]) {
@@ -285,6 +284,7 @@ function ajaxDoProject(order_by){
 		$.each(data, function(index, value) {
 			var hd = '<tr>';
 			hd += '<td>'+'<a href=\"/projects/edit/'+value.id+'\">'+value.project_name+'</a>'+'</td>'
+
 			hd += '<td>'+value.client_name+'</td>'
 			hd += '<td>'+value.order_status+'</td>'
 			hd += '<td>'+value.technology+'</td>'
@@ -306,6 +306,7 @@ function ajaxDoProject(order_by){
 		$('#totalPriceEstimate').append('予定額：'+priceEstimate.toLocaleString()+'万円');
 	},
 	//失敗した場合
+
 	error : function(XMLHttpRequest, textStatus, errorThrown) {
 		alert("エラーが発生しました：" + textStatus + ":\n" + errorThrown);
 	}

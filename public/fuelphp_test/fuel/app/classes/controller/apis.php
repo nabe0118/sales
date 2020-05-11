@@ -13,6 +13,7 @@ class Controller_Apis extends \Controller_Rest
 		$input_cond =  Input::get('cond');
 		$input_order_by = input::get('order_by');
 
+
 		//日付絞り込み
 		$refineStart = $input_cond['from'];
 		$refineEnd = $input_cond['to'];
@@ -136,7 +137,6 @@ class Controller_Apis extends \Controller_Rest
 		}
 		return $this->response($data2) ;
 	}
-
 		
 		public function get_allmembers()
 		{
@@ -207,7 +207,6 @@ class Controller_Apis extends \Controller_Rest
 		return $this->response($data4) ;
 
 		}
-
 
 		//viewで渡すデーターをオブジェクト化
 		public function createViewData()

@@ -8,6 +8,7 @@ class Controller_Projects extends Controller_Template
 
 	public function action_index()
 	{
+
 		$query = DB::select(
 					'projects.*','clients.client_name','members.full_name'
 		)
