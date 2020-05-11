@@ -19,18 +19,28 @@ class Controller_Apis extends \Controller_Rest
 		$order_expectation = $input_cond['order_expectation'];
 		$order_status = $input_cond['order_status'];
 	
-		$query = DB::select()->from('projects')->where('id','>',0);
+		$query = DB::select()
+					->from('projects')
+					//クライアントテーブルを結合
+					->join('clients', 'INNER')
+					->on('clients.id', '=', 'projects.client_id')
+					//メンバーテーブルを結合
+					->join('members', 'INNER')
+					->on('members.employee_id', '=', 'projects.employee_id')
+					->where('members.tenure_flag','=',1)
+					->where('clients.is_deleted', '=', 0);
+
 		if ($refineStart) {
-			$query->and_where('delivery_date','>=',$refineStart);
+			$query->where('projects.delivery_date','>=',$refineStart);
 		}
 		if ($refineEnd) {
-			$query->and_where('delivery_date','<=',$refineEnd);
+			$query->where('projects.delivery_date','<=',$refineEnd);
 		}
 		if ($order_expectation) {
-			$query->and_where('order_expectation','in',$order_expectation);
+			$query->where('projects.order_expectation','in',$order_expectation);
 		}
 		if ($order_status) {
-			$query->and_where('order_status','in',$order_status);
+			$query->where('projects.order_status','in',$order_status);
 		}
 		if($input_order_by){
 			$query->order_by($input_order_by['field'],$input_order_by['order_by']);
@@ -75,11 +85,11 @@ class Controller_Apis extends \Controller_Rest
 
 			$value['price_kari'] = $value['price'];
 
-			if($value['price_flag'])
+			if($value['order_status'] == 1 ||$value['order_status'] == 5)
 			{
-				$value['price_kari'] = 0;
-			}else{
 				$value['price'] = 0;
+			}else{
+				$value['price_kari'] = 0;
 			}
 
 
@@ -127,7 +137,7 @@ class Controller_Apis extends \Controller_Rest
 		return $this->response($data2) ;
 	}
 
-
+		
 		public function get_allmembers()
 		{
 			$this->format = 'json';
@@ -139,7 +149,7 @@ class Controller_Apis extends \Controller_Rest
 			
 
 			if($checked != 1){
-				$query->and_where('tenure_flag','=',1);
+				$query->where('tenure_flag','=',1);
 			}		
 			if($input_order_by){
 				$query->order_by($input_order_by['field'],$input_order_by['order_by']);
@@ -170,10 +180,34 @@ class Controller_Apis extends \Controller_Rest
 				}
 				$data3[] = $value; 
 			}
-
 		return $this->response($data3) ;
+		}
+
+		public function get_allclients()
+		{
+			$this->format = 'json';
+			$input_order_by = input::get('order_by');
+
+			$query = DB::select()->from('clients')->where('id','>',0);
+				
+			if($input_order_by){
+				$query->order_by($input_order_by['field'],$input_order_by['order_by']);
+			}
+
+			$clientsdata = $query->execute();
+
+			Log::info(print_r($clientsdata,true));
+
+			$data4 = [];
+			foreach($clientsdata as $value)
+			{
+				$data4[] = $value; 
+			}
+
+		return $this->response($data4) ;
 
 		}
+
 
 		//viewで渡すデーターをオブジェクト化
 		public function createViewData()

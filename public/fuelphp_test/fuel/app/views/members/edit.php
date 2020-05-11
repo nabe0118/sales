@@ -1,7 +1,7 @@
 <h2><span class='muted'>メンバー詳細</span></h2>
 <br>
 
-<?php echo Form::open(array("class"=>"form-horizontal")); ?>
+<?php echo Form::open(); ?>
 
 	<fieldset>
 
@@ -49,7 +49,8 @@
 				<?php /* echo Form::input('authority', Input::post('authority', isset($member) ? $member->authority : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Authority')); */?>
 		</div>
 		<div class="form-group"></div>
-			<?php echo Form::checkbox('tenure_flag',2,Input::post('tenure_flag') == '2', array('id' => 'tenure_flag_1')) ?>
+			<?php //echo Form::checkbox('tenure_flag',2,Input::post('tenure_flag') == '2', array('id' => 'tenure_flag_1')) ?>
+			<?php echo Form::checkbox('tenure_flag',2,Input::post('tenure_flag',isset($member) ? $member->tenure_flag : '') == '2' or (Input::post('tenure_flag') == '' and !isset($member)) , array('id' => 'form_authority_1')) ?>
 			<?php echo Form::label('退職', 'tenure_flag1') ?><br>
 		</div>
 

@@ -9,20 +9,24 @@
 
 <?php echo Html::anchor('#', 'システム設定',array('class' => 'btn btn-default')); ?><br><br>
 
-<div>
-    <input type="checkbox" id="onlyDone" name="onlyDone" value= 1>
-    <label for="onlyDone">完了のみを表示</label>
-</div>
+<!-- <div>
+    <input type="checkbox" id="allowSelect" name="allowSelect" value= 1>
+    <label for="allowSelect">完了のみを表示</label>
+</div> -->
 
 
 <?php echo Form::open(array('action'=>null,'id'=>'refineDate')); ?>
 		<fieldset>
 		<div>
-			<h3>納期で絞込</h3>
-			<?php echo Form::input('refineStartDay', Input::post('refineStartDay'), array('class'=>'from','type'=>'date')); ?>
+			<div>
+				<h4>
+					<input type="checkbox" id="allowSelect" name="allowSelect" value= 0>納期で絞込
+				</h4>
+			</div>
+			<?php echo Form::input('refineStartDay', Input::post('refineStartDay'), array('class'=>'from','type'=>'date','disabled'=>true)); ?>
 			〜
-			<?php echo Form::input('refineEndDay', Input::post('refineEndDay'), array('class'=>'to','type'=>'date')); ?>
-			<?php echo Form::button('sentBtn', '絞り込み', array('type'=>'button','id'=>'sentBtn','class' => 'btn btn-primary')); ?>	
+			<?php echo Form::input('refineEndDay', Input::post('refineEndDay'), array('class'=>'to','type'=>'date','disabled'=>true)); ?>
+			<?php echo Form::button('sentBtn', '絞り込み', array('type'=>'button','id'=>'sentBtn','class' => 'btn btn-primary','disabled'=>true)); ?>	
 		</div>
 
 		<div class="remodal" data-remodal-id="modalA" data-remodal-options="closeOnOutsideClick:false" data-classname="ajaxCondStatusOptions">
@@ -40,8 +44,11 @@
 				<?php echo Form::checkbox('order_status', '請求済', true, array('class' => 'ajaxCondStatusOptions',"data-value"=>"3", "data-label"=>"請求済")); ?>
 				<?php echo Form::label('請求済', 'order_status_checkbox4'); ?><br>
 
-				<?php echo Form::checkbox('order_status', '完了', true, array('class' => 'ajaxCondStatusOptions',"data-value"=>"4", "data-label"=>"完了")); ?>
-				<?php echo Form::label('完了', 'order_status_checkbox5'); ?>
+				<?php echo Form::checkbox('order_status', '完了', false, array('class' => 'ajaxCondStatusOptions',"data-value"=>"4", "data-label"=>"完了")); ?>
+				<?php echo Form::label('完了', 'order_status_checkbox5'); ?><br>
+
+				<?php echo Form::checkbox('order_status', '失注', false, array('class' => 'ajaxCondStatusOptions',"data-value"=>"5", "data-label"=>"失注")); ?>
+				<?php echo Form::label('失注', 'order_status_checkbox5'); ?>
 
 			</div>
 				<button id="modalANg" data-remodal-action="cancel" class="remodal-cancel">Cancel</button>
@@ -80,7 +87,7 @@
 <h4 id =totalPriceConfirm>確定額：<?php echo number_format($totalPriceConfirm); ?>万円</h4>
 <h4 id =totalPriceEstimate>予定額：<?php echo number_format($totalPriceEstimate); ?>万円</h4>
 
-<div>検索条件</div>
+<div>表示条件</div>
 <div>
 	<span>ステータス:</span>
 	<span id="condtextStatus">全件</span>
@@ -94,30 +101,31 @@
 <table id="projects-table" class="table table-striped">
 	<thead>
 		<tr>
-			<th>プロジェクト名</th>
-			<th>クライアント</th>
+			<th id = 'projects.project_name' class = 'sorting_desc sorttable'>プロジェクト名</th>
+			<th id = 'clients.client_kana' class = 'sorting_desc sorttable'>クライアント</th>
 			<th><a data-remodal-target="modalA">ステータス</a></th>
-			<th>属性</th>
-			<th id = 'start_date' class = 'sorting_desc sorttable'>開始日</th>
-			<th>納期</th>
-			<th>予定(万)</th>
-			<th>金額(万)</th>
+			<th id = 'projects.technology' class = 'sorting_desc sorttable'>属性</th>
+			<th id = 'projects.start_date' class = 'sorting_desc sorttable'>開始日</th>
+			<th id = 'projects.delivery_date' class = 'sorting_desc sorttable'>納期</th>
+			<th id = 'projects.price' class = 'sorting_desc sorttable'>予定(万)</th>
+			<th id = 'projects.price' class = 'sorting_desc sorttable'>金額(万)</th>
 			<th><a data-remodal-target="modalB">確度</a></th>
-			<th>PM</th>
-			<th>Memo</th>
+			<th id = 'members.name_kana' class = 'sorting_desc sorttable'>PM</th>
+			<th id = 'projects.memo' class = 'sorting_desc sorttable'>Memo</th>
 		</tr>
 	</thead>
 	<tbody id = refine-project>
 <?php foreach ($projects as $item): ?>
 		<tr>
 			<td><?php echo Html::anchor('projects/edit/'.$item->id, $item->project_name); ?></td>
+			<?php //Log::info(print_r($client_data[$item->client_id],true)); ?>
 			<td><?php echo $client_data[$item->client_id]; ?></td>
 			<td><?php echo $index_order_status[$item->order_status]; ?></td>
 			<td><?php echo $item->technology; ?></td>
 			<td><?php echo date('Y/m/d',strtotime($item->start_date));?></td>
 			<td><?php echo date('Y/m/d',strtotime($item->delivery_date));?></td>
-			<td><?php echo $item->price_flag? '---------' : number_format($item->price); ?></td>
-			<td><?php echo !$item->price_flag?  '---------' : number_format($item->price); ?></td>
+			<td><?php echo !($item->order_status == 1 or $item->order_status ==5) ? '0' : number_format($item->price); ?></td>
+			<td><?php echo ($item->order_status == 1 or $item->order_status ==5)?  '0' : number_format($item->price); ?></td>
 			<td><?php echo $index_order_expectation[$item->order_expectation]; ?></td>
 			<td><?php echo $members_name[$item->employee_id]; ?></td>
 			<td><?php echo $item->memo; ?></td>
@@ -138,21 +146,28 @@
 'use strict';
 
 (function($){
-	$("#onlyDone").on('change', function(){
-		$('input[type="checkbox"].ajaxCondStatusOptions')
-			.each(function (i, e) {
-				if($("#onlyDone").prop("checked") == true){
-					if ($(e).data('value') == 4) {
-						$(e).prop('checked',true);
-					} else {
-						$(e).prop('checked',false);
-					}
-				}else{
-					$(e).prop('checked',true);
-				}
-				
-			});
-		ajaxDoProject({});
+	$("#allowSelect").on('change', function(){
+		if($("#allowSelect").prop("checked") == true){
+			$(".from").prop("disabled", false);
+			$(".to").prop("disabled", false);
+			$("#sentBtn").prop("disabled", false);	
+		}else{
+			var from = $('.from').val();
+			var to = $('.to').val();
+			$('.from').val('');
+			$('.to').val('');
+			$(".from").prop("disabled", true);
+			$(".to").prop("disabled", true);
+			$("#sentBtn").prop("disabled", true);
+			if(from || to){
+				ajaxDoProject({});
+			}
+		}
+	});
+
+
+	$('#all').on("click",function(){
+    $('.list').prop("checked", $(this).prop("checked"));
 	});
 
 	$(".sorttable").on('click',function(){
@@ -251,8 +266,8 @@ function ajaxDoProject(order_by){
 			hd += '<td>'+value.technology+'</td>'
 			hd += '<td>'+value.start_date+'</td>'
 			hd += '<td>'+value.delivery_date+'</td>'
-			hd += '<td>'+value.price_kari+'</td>'
-			hd += '<td>'+value.price+'</td>'
+			hd += '<td>'+Number(value.price_kari).toLocaleString()+'</td>'
+			hd += '<td>'+Number(value.price).toLocaleString()+'</td>'
 			hd += '<td>'+value.order_expectation+'</td>'
 			hd += '<td>'+value.members_name+'</td>'
 			hd += '<td>'+value.memo+'</td>'
@@ -263,8 +278,8 @@ function ajaxDoProject(order_by){
 			priceConfirm += parseInt(value.price);
 			priceEstimate += parseInt(value.price_kari);
 		});
-		$('#totalPriceConfirm').append(priceConfirm);
-		$('#totalPriceEstimate').append(priceEstimate);
+		$('#totalPriceConfirm').append('確定額：'+priceConfirm.toLocaleString()+'万円');
+		$('#totalPriceEstimate').append('予定額：'+priceEstimate.toLocaleString()+'万円');
 	},
 	//失敗した場合
 	error : function(XMLHttpRequest, textStatus, errorThrown) {

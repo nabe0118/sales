@@ -2,7 +2,7 @@
 
 	<fieldset>
 
-		<a>登録日：<?php echo date("Y/m/d"); ?></a>
+		<p>登録日：<?php echo date("Y/m/d"); ?></p>
 
 		<div class="form-group">
 			<?php echo Form::label('プロジェクト名', 'project_name', array('class'=>'control-label')); ?>
@@ -23,7 +23,7 @@
 
 		<div class="form-group">
 			<?php echo Form::label('開始', 'start_date', array('class'=>'control-label')); ?>
-			<?php echo Form::input('start_date', Input::post('start_date', isset($project) ?  : ''), array('class' => 'col-md-4 form-control', 'type'=>'date','placeholder'=>$today)); ?>
+			<?php echo Form::input('start_date', Input::post('start_date', isset($project) ? $project->start_date  : ''), array('class' => 'col-md-4 form-control', 'type'=>'date','placeholder'=>$today)); ?>
 		</div>
 
 		<div class="form-group">
@@ -113,10 +113,6 @@
 			<?php echo Form::input('price', Input::post('price', isset($project) ? $project->price : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'500')); ?>
 		</div>
 
-		<div class="form-group">
-			<?php echo Form::checkbox('price_flag',1,Input::post('price_flag') == '1', array('id' => 'form_price_flag_1')) ?>
-			<?php echo Form::label('確定', 'price_flag1') ?><br>
-		</div>
 
 		<div class="form-group">
 			<label class='control-label'>&nbsp;</label>

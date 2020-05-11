@@ -27,7 +27,7 @@
 		</tr>
 	</thead>
 	<tbody id = all-members>
-<?php foreach ($members as $item): ?>		
+<?php foreach ($members as $item): ?>	
 		<tr>
 			<td><?php echo $item->employee_id; ?></td>
 			<td><?php echo $item->full_name; ?></td>
@@ -35,6 +35,7 @@
 			<td><?php echo $item->email; ?></td>
 			<td><?php echo $kenngen[$item->authority]; ?></td>
 			<td><?php echo $zaiseki[$item->tenure_flag]; ?></td>
+			<td><?php echo Html::anchor('/members/edit/'.$item->id,'詳細'); ?></td>
 		</tr>
 <?php endforeach; ?>	
 	</tbody>

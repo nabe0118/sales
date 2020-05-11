@@ -45,6 +45,7 @@ class Model_Project extends Model
 		1 => 'フルスクラッチ',
 		2 => 'カスタマイズ',
 		3 => 'パッケージ',
+		4 => '未選択',
 	];
 
 	public static $price_section = [

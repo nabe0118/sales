@@ -1,4 +1,4 @@
-<?php echo Form::open(array("class"=>"form-horizontal")); ?>
+<?php echo Form::open(); ?>
 
 	<fieldset>
 		<div class="form-group">

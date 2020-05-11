@@ -8,7 +8,22 @@ class Controller_Projects extends Controller_Template
 
 	public function action_index()
 	{
-		$data['projects'] = Model_Project::find('all');
+		$query = DB::select(
+					'projects.*','clients.client_name','members.full_name'
+		)
+					->from('projects')
+					//クライアントテーブルを結合
+					->join('clients', 'INNER')
+					->on('clients.id', '=', 'projects.client_id')
+					//メンバーテーブルを結合
+					->join('members', 'INNER')
+					->on('members.employee_id', '=', 'projects.employee_id')
+					->where('members.tenure_flag','=',1)
+					->where('clients.is_deleted', '=', 0)
+					->where('projects.order_status','in',[1,2,3]);
+
+		$data['projects'] = $query->as_object()->execute();
+
 		$data['index_order_status'] = Model_Project::$order_status;
 		$data['index_order_expectation'] = Model_Project::$order_expectation;
 
@@ -17,28 +32,20 @@ class Controller_Projects extends Controller_Template
 		$data['members_name'] = $viewData['members_name'];
 		
 		//プロジェクトの合計金額
-		$query = DB::select(\DB::expr('SUM(price) AS total'))->from('projects')->where('price_flag',0)->execute()->as_array();
-		$data['totalPriceEstimate'] = $query[0]['total'];
+		$data['totalPriceConfirm'] = 0;
+		$data['totalPriceEstimate'] = 0;
 
-		$query = DB::select(\DB::expr('SUM(price) AS total2'))->from('projects')->where('price_flag',1)->execute()->as_array();
-		$data['totalPriceConfirm'] = $query[0]['total2'];
+		foreach($data['projects'] as $v){
+			if($v->order_status == 1 ||$v->order_status == 5){
+				$data['totalPriceEstimate'] += $v->price;
+			}else{
+				$data['totalPriceConfirm']+= $v->price;
+
+			}
+		}
 
 		$this->template->title = "Projects";
 		$this->template->content = View::forge('projects/index', $data);
-	}
-
-	public function action_view($id = null)
-	{
-		is_null($id) and Response::redirect('projects');
-
-		if (!$data['project'] = Model_Project::find($id))
-		{
-			Session::set_flash('error', 'Could not find project #'.$id);
-			Response::redirect('projects');
-		}
-
-		$this->template->title = "Project";
-		$this->template->content = View::forge('projects/view', $data);
 	}
 
 	public function action_create()
@@ -46,8 +53,8 @@ class Controller_Projects extends Controller_Template
 		$viewData = $this->createViewData();
 		$data['client_data'] = $viewData['client_data'];
 		$data['members_name'] = $viewData['members_name'];
-		$data['members_name'] = array_merge([null => '選択してください'],$data['members_name']);
-		$data['client_data'] = array_merge([null => '選択してください'],$data['client_data']);
+		// $data['members_name'] = array_merge([null => '選択してください'],$data['members_name']);
+		// $data['client_data'] = array_merge([null => '選択してください'],$data['client_data']);
 
 		$data['today'] = date("Ymd");
 		$data['lastDayOfMonth'] = date("Ymt");
@@ -76,20 +83,28 @@ class Controller_Projects extends Controller_Template
 					'is_deleted' => false,
 				));
 
+				//checkboxにcheckが入らなかったら
 				if($project['price_flag'] == null){
 					$project['price_flag'] = 0;
 				}
 
-				Log::info($project['start_date']);
-				Log::info($project['delivery_date']);
+				//radioボタンにcheckが入らなかったら
+				if($project['development'] == 0){
+					$project['development'] = 4;
+				}
 
-				//カレンダーを８桁の数字に戻す。
-				// $str = $project['start_date']
-				// $prg = '^\d{4}-\d{2}-\d{2}$';
-				// $repreg = '^\d{8}$';
+				//ステータスでの処理分け
+				if($project['order_status'] == 2){
+					$project['price_flag'] = 1;
+				}
 
-				// $strPreg = ($prg,$repreg,$str);
-				// strPreg = preg_replace('^\d{4}-\d{2}-\d{2}$','^\d{8}$',$str);
+				if($project['price_flag'] == 3){
+					$project['price_flag'] = 1;
+				}
+
+				if($project['price_flag'] == 4){
+					$project['price_flag'] = 1;
+				}
 
 
 				if ($project and $project->save())
@@ -127,11 +142,27 @@ class Controller_Projects extends Controller_Template
 
 		is_null($id) and Response::redirect('projects');
 
-		if ( ! $project = Model_Project::find($id))
+		$query = DB::select()
+					->from('projects')
+					//クライアントテーブルを結合
+					->join('clients', 'INNER')
+					->on('clients.id', '=', 'projects.client_id')
+					//メンバーテーブルを結合
+					->join('members', 'INNER')
+					->on('members.employee_id', '=', 'projects.employee_id')
+					->where('members.tenure_flag','=',1)
+					->where('clients.is_deleted', '=', 0)
+					->where('projects.id', '=', $id);
+
+		$project = $query->as_object()->execute();
+		if (!$project)
 		{
 			Session::set_flash('error', 'Could not find project #'.$id);
 			Response::redirect('projects');
 		}
+
+		$project =  Model_Project::find($id);
+
 
 		$val = Model_Project::validate('edit');
 
@@ -156,6 +187,11 @@ class Controller_Projects extends Controller_Template
 			if($project['price_flag'] == null)
 			{
 				$project['price_flag'] = 0;
+			}
+
+			//radioボタンにcheckが入らなかったら
+			if($project['development'] == 0){
+				$project['development'] = 4;
 			}
 
 			if ($project->save())
@@ -232,7 +268,7 @@ class Controller_Projects extends Controller_Template
 		}
 
 		// $members = Model_Member::find('all',['select'=>['employee_id','full_name']]);
-		$members = DB::select()->from('members')->order_by('name_kana','asc')->execute()->as_array();
+		$members = DB::select()->from('members')->where('tenure_flag','=',1)->order_by('name_kana','asc')->execute()->as_array();
 
 		foreach($members as $member){
 			$data['members_name'][$member['employee_id']] = $member['full_name'];
